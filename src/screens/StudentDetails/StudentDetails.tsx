@@ -1,6 +1,6 @@
 import React from 'react';
-import {Image, Text, View} from 'react-native';
-import {StudentInfo} from './StudentInfo';
+
+import {Contacts} from './Contacts';
 
 const StudentDetails_: React.FC<{}> = () => {
   const [studentName, setStudentName] = React.useState<string>('Иван Иванов');
@@ -8,42 +8,32 @@ const StudentDetails_: React.FC<{}> = () => {
   const [studentEmail, setStudentEmail] =
     React.useState<string>('test@gmail.com');
 
+  const [parentName, setParentName] = React.useState<string>('Иван Иванов');
+  const [parentPhone, setParentPhone] = React.useState<string>('');
+
   const isEditMode: boolean = false;
 
   return (
-    <View>
-      <Image
-        source={require('../../assets/avatar.png')}
-        style={{width: 40, height: 40, borderRadius: 44 / 2}}
+    <>
+      <Contacts
+        label="Контакты ученика"
+        name={studentName}
+        onChangeName={setStudentName}
+        phone={studentPhone}
+        onChangePhone={setStudentPhone}
+        email={studentEmail}
+        onChangeEmail={setStudentEmail}
+        isEditable={isEditMode}
       />
-      <View>
-        <Text style={{fontWeight: 'bold', fontSize: 20, color: 'green'}}>
-          Контакты ученика
-        </Text>
-        <StudentInfo
-          name={studentName}
-          onChangeName={setStudentName}
-          phone={studentPhone}
-          onChangePhone={setStudentPhone}
-          isEditable={isEditMode}
-        />
-        {/* <Text>Номер телефона:</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setStudentPhone}
-          value={studentPhone}
-          editable={isEditMode}
-        /> */}
-      </View>
-
-      {/* <Text>Имейл:</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={setStudentEmail}
-        value={studentEmail}
-        editable={isEditMode}
-      /> */}
-    </View>
+      <Contacts
+        label="Контакты родителя"
+        name={parentName}
+        onChangeName={setParentName}
+        phone={parentPhone}
+        onChangePhone={setParentPhone}
+        isEditable={isEditMode}
+      />
+    </>
   );
 };
 

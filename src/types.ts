@@ -7,3 +7,5 @@ export type TJustifyContent =
   | 'space-between'
   | 'space-around'
   | 'space-evenly';
+
+export type TFlexWrap = 'wrap' | 'nowrap' | 'wrap-reverse';

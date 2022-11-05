@@ -1,4 +1,4 @@
-import {TSplitResult} from './Input/types';
+import {TSplitResult} from './types';
 
 export const splitProp = (prop: number | string): TSplitResult => {
   if (typeof prop === 'number') {

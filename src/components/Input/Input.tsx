@@ -1,7 +1,7 @@
 import React from 'react';
 import {TextInput, ViewStyle} from 'react-native';
 import {splitProp} from '../split-prop';
-import {TSplitResult} from './types';
+import {TSplitResult} from '../types';
 
 type TProps = Readonly<{
   value: string;
@@ -35,24 +35,6 @@ const Input_: React.FC<TProps> = ({
     const marginFinal: TSplitResult = margin ? splitProp(margin) : {};
     const paddingFinal: TSplitResult = padding ? splitProp(padding) : {};
     const mainStyle: ViewStyle = isEditable ? activeStyle : disabledStyle;
-
-    console.log('marginFinal', marginFinal, 'result', {
-      ...mainStyle,
-      margin: marginFinal.all,
-      marginLeft: marginFinal.left,
-      marginRight: marginFinal.right,
-      marginTop: marginFinal.top,
-      marginBottom: marginFinal.bottom,
-      marginVertical: marginFinal.vertical,
-      marginHorizontal: marginFinal.horizontal,
-      padding: paddingFinal.all,
-      paddingLeft: paddingFinal.left,
-      paddingRight: paddingFinal.right,
-      paddingTop: paddingFinal.top,
-      paddingBottom: paddingFinal.bottom,
-      paddingVertical: paddingFinal.vertical,
-      paddingHorizontal: paddingFinal.horizontal,
-    });
 
     return {
       ...mainStyle,
