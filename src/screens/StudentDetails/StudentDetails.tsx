@@ -1,6 +1,6 @@
 import React from 'react';
-import {Field} from '../../components/Field';
 
+import {Field} from '../../components/Field';
 import {Screen} from '../../components/Screen';
 import {Contacts} from './Contacts';
 import {InfoRow} from './InfoRow';
@@ -18,7 +18,7 @@ const StudentDetails_: React.FC<{}> = () => {
   const [address, setAddress] = React.useState<string>('');
   const [commentary, setCommentary] = React.useState<string>('');
 
-  const isEditMode: boolean = false;
+  const isEditMode: boolean = true;
 
   return (
     <Screen>
@@ -57,12 +57,7 @@ const StudentDetails_: React.FC<{}> = () => {
         padding="15 0 0 0"
       />
       <Field
-        label="Комментарий"
-        value={commentary}
-        onChangeText={setCommentary}
-        isEditable={isEditMode}
-      />
-      <Field
+        isMultiline
         label="Комментарий"
         value={commentary}
         onChangeText={setCommentary}

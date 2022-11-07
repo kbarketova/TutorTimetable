@@ -1,5 +1,6 @@
 import React from 'react';
-import {TextInput, TextStyle, ViewStyle} from 'react-native';
+import {Platform, TextInput, TextStyle, ViewStyle} from 'react-native';
+
 import {
   GreenThemeTextColor,
   GreenThemeTextDisabledColor,
@@ -13,6 +14,7 @@ type TProps = Readonly<{
   isEditable?: boolean | null;
   margin?: number | string | null;
   padding?: number | string | null;
+  multiline?: boolean | null;
 }>;
 
 const activeStyle: TextStyle = {
@@ -36,7 +38,12 @@ const Input_: React.FC<TProps> = ({
   isEditable = null,
   margin = null,
   padding = null,
+  multiline = null,
 }: TProps) => {
+  const isAndroid: boolean = Platform.OS === 'android';
+  const numberOfLinesFinal = isAndroid && multiline ? 3 : undefined;
+  const textAlignVerticalFinal = isAndroid && multiline ? 'top' : undefined;
+
   const style = React.useMemo<ViewStyle>(() => {
     const marginFinal: TSplitResult = margin ? splitProp(margin) : {};
     const paddingFinal: TSplitResult = padding ? splitProp(padding) : {};
@@ -44,6 +51,7 @@ const Input_: React.FC<TProps> = ({
 
     return {
       ...mainStyle,
+      height: multiline ? undefined : mainStyle.height,
       margin: marginFinal.all,
       marginLeft: marginFinal.left,
       marginRight: marginFinal.right,
@@ -59,7 +67,7 @@ const Input_: React.FC<TProps> = ({
       paddingVertical: paddingFinal.vertical,
       paddingHorizontal: paddingFinal.horizontal,
     };
-  }, [isEditable, margin, padding]);
+  }, [isEditable, margin, multiline, padding]);
 
   return (
     <TextInput
@@ -67,6 +75,9 @@ const Input_: React.FC<TProps> = ({
       onChangeText={onChangeText}
       value={value}
       editable={isEditable ?? undefined}
+      multiline={multiline ?? undefined}
+      textAlignVertical={textAlignVerticalFinal}
+      numberOfLines={numberOfLinesFinal}
     />
   );
 };

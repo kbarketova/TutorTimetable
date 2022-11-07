@@ -13,6 +13,7 @@ type TProps = Readonly<{
   inputPadding?: number | string | null;
   labelSize?: number | null;
   labelWeight?: string | null;
+  isMultiline?: boolean | null;
 }>;
 
 const innerLabelStyle: TextStyle = {
@@ -31,6 +32,7 @@ const Field_: React.FC<TProps> = ({
   inputPadding = null,
   labelSize = null,
   labelWeight = null,
+  isMultiline = null,
 }: TProps) => {
   const labelStyle = React.useMemo<ViewStyle>(() => {
     return {
@@ -49,6 +51,7 @@ const Field_: React.FC<TProps> = ({
         isEditable={isEditable ?? undefined}
         margin={inputMargin}
         padding={inputPadding}
+        multiline={isMultiline}
       />
     </Flex>
   );
