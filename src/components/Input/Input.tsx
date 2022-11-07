@@ -1,5 +1,9 @@
 import React from 'react';
-import {TextInput, ViewStyle} from 'react-native';
+import {TextInput, TextStyle, ViewStyle} from 'react-native';
+import {
+  GreenThemeTextColor,
+  GreenThemeTextDisabledColor,
+} from '../../constants';
 import {splitProp} from '../split-prop';
 import {TSplitResult} from '../types';
 
@@ -11,17 +15,19 @@ type TProps = Readonly<{
   padding?: number | string | null;
 }>;
 
-const activeStyle: ViewStyle = {
+const activeStyle: TextStyle = {
   flex: 1,
   height: 40,
   borderWidth: 2,
   borderRadius: 3,
-  borderColor: '#9C9E9F90',
+  borderColor: GreenThemeTextColor,
+  color: GreenThemeTextColor,
 };
 
-const disabledStyle: ViewStyle = {
+const disabledStyle: TextStyle = {
   ...activeStyle,
-  borderColor: '#9C9E9F70',
+  borderColor: GreenThemeTextDisabledColor,
+  color: GreenThemeTextDisabledColor,
 };
 
 const Input_: React.FC<TProps> = ({

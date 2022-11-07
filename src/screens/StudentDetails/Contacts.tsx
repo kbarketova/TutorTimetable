@@ -3,6 +3,7 @@ import {Text, TextStyle} from 'react-native';
 
 import {Field} from '../../components/Field';
 import {Flex} from '../../components/Flex';
+import {InfoRow} from './InfoRow';
 
 type TProps = Readonly<{
   isEditable: boolean;
@@ -13,6 +14,7 @@ type TProps = Readonly<{
   onChangePhone: (value: string) => void;
   email?: string | null;
   onChangeEmail?: ((value: string) => void) | null;
+  padding?: number | string | null;
 }>;
 
 const labelStyle: TextStyle = {
@@ -30,30 +32,21 @@ const Contacts_: React.FC<TProps> = ({
   onChangePhone,
   email = null,
   onChangeEmail = null,
+  padding = null,
 }: TProps) => {
   return (
-    <Flex padding="0 0 10 0">
+    <Flex padding={padding}>
       <Text style={labelStyle}>{label}</Text>
-      <Flex flexDirection="row" flexWrap="wrap">
-        <Field
-          label="Имя"
-          value={name}
-          onChangeText={onChangeName}
-          isEditable={isEditable}
-          inputMargin="0 15 0 0"
-          labelSize={15}
-          labelWeight="400"
-        />
-        <Field
-          label="Телефон"
-          value={phone}
-          onChangeText={onChangePhone}
-          isEditable={isEditable}
-          labelSize={15}
-          labelWeight="400"
-        />
-      </Flex>
-      {!!onChangeEmail && typeof email === 'string' && (
+      <InfoRow
+        isEditable={isEditable}
+        label="Имя"
+        value={name}
+        onChangeText={onChangeName}
+        labelAdditional="Телефон"
+        valueAdditional={phone}
+        onChangeTextAdditional={onChangePhone}
+      />
+      {onChangeEmail && typeof email === 'string' && (
         <Field
           label="Эл. почта"
           value={email}

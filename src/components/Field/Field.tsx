@@ -1,5 +1,6 @@
 import React from 'react';
 import {Text, TextStyle, ViewStyle} from 'react-native';
+import {GreenThemeTextColor} from '../../constants';
 import {Flex} from '../Flex';
 import {Input} from '../Input';
 
@@ -15,8 +16,10 @@ type TProps = Readonly<{
 }>;
 
 const innerLabelStyle: TextStyle = {
-  paddingVertical: 5,
-  fontWeight: 'bold',
+  paddingVertical: 10,
+  fontWeight: '400',
+  color: GreenThemeTextColor,
+  fontSize: 15,
 };
 
 const Field_: React.FC<TProps> = ({
@@ -30,7 +33,11 @@ const Field_: React.FC<TProps> = ({
   labelWeight = null,
 }: TProps) => {
   const labelStyle = React.useMemo<ViewStyle>(() => {
-    return {...innerLabelStyle, fontSize: labelSize, fontWeight: labelWeight};
+    return {
+      ...innerLabelStyle,
+      fontSize: labelSize ?? innerLabelStyle.fontSize,
+      fontWeight: labelWeight ?? innerLabelStyle.fontWeight,
+    };
   }, [labelSize, labelWeight]);
 
   return (

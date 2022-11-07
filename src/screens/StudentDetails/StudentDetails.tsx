@@ -1,6 +1,9 @@
 import React from 'react';
+import {Field} from '../../components/Field';
 
+import {Screen} from '../../components/Screen';
 import {Contacts} from './Contacts';
+import {InfoRow} from './InfoRow';
 
 const StudentDetails_: React.FC<{}> = () => {
   const [studentName, setStudentName] = React.useState<string>('Иван Иванов');
@@ -10,11 +13,15 @@ const StudentDetails_: React.FC<{}> = () => {
 
   const [parentName, setParentName] = React.useState<string>('Иван Иванов');
   const [parentPhone, setParentPhone] = React.useState<string>('');
+  const [grade, setGrade] = React.useState<string>('');
+  const [price, setPrice] = React.useState<string>('');
+  const [address, setAddress] = React.useState<string>('');
+  const [commentary, setCommentary] = React.useState<string>('');
 
   const isEditMode: boolean = false;
 
   return (
-    <>
+    <Screen>
       <Contacts
         label="Контакты ученика"
         name={studentName}
@@ -25,6 +32,21 @@ const StudentDetails_: React.FC<{}> = () => {
         onChangeEmail={setStudentEmail}
         isEditable={isEditMode}
       />
+      <InfoRow
+        isEditable={isEditMode}
+        label="Класс"
+        value={grade}
+        onChangeText={setGrade}
+        labelAdditional="Цена"
+        valueAdditional={price}
+        onChangeTextAdditional={setPrice}
+      />
+      <Field
+        label="Адрес"
+        value={address}
+        onChangeText={setAddress}
+        isEditable={isEditMode}
+      />
       <Contacts
         label="Контакты родителя"
         name={parentName}
@@ -32,8 +54,21 @@ const StudentDetails_: React.FC<{}> = () => {
         phone={parentPhone}
         onChangePhone={setParentPhone}
         isEditable={isEditMode}
+        padding="15 0 0 0"
       />
-    </>
+      <Field
+        label="Комментарий"
+        value={commentary}
+        onChangeText={setCommentary}
+        isEditable={isEditMode}
+      />
+      <Field
+        label="Комментарий"
+        value={commentary}
+        onChangeText={setCommentary}
+        isEditable={isEditMode}
+      />
+    </Screen>
   );
 };
 
