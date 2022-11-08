@@ -9,6 +9,7 @@ type TProps = Readonly<{
   color?: string | null;
   margin?: number | string | null;
   padding?: number | string | null;
+  isScrollable?: boolean | null;
 }>;
 
 const innerContainerStyle: ViewStyle = {
@@ -21,7 +22,10 @@ const Screen_: React.FC<TProps> = ({
   color,
   margin = null,
   padding = null,
+  isScrollable = null,
 }: TProps) => {
+  const isScrollableFinal: boolean = isScrollable ?? false;
+
   const style = React.useMemo<ViewStyle>(() => {
     return {
       ...innerContainerStyle,
@@ -29,12 +33,20 @@ const Screen_: React.FC<TProps> = ({
     };
   }, [color]);
 
+  if (isScrollableFinal) {
+    return (
+      <ScrollView style={style}>
+        <Flex padding={padding ?? '30 25'} margin={margin}>
+          {children}
+        </Flex>
+      </ScrollView>
+    );
+  }
+
   return (
-    <ScrollView style={style}>
-      <Flex padding={padding ?? '30 25'} margin={margin}>
-        {children}
-      </Flex>
-    </ScrollView>
+    <Flex padding={padding ?? '30 25'} margin={margin}>
+      {children}
+    </Flex>
   );
 };
 

@@ -21,7 +21,7 @@ const StudentDetails_: React.FC<{}> = () => {
   const isEditMode: boolean = true;
 
   return (
-    <Screen>
+    <Screen isScrollable>
       <Contacts
         label="Контакты ученика"
         name={studentName}

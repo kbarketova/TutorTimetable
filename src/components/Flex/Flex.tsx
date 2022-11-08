@@ -13,6 +13,9 @@ type TProps = Readonly<{
   padding?: number | string | null;
   flexWrap?: TFlexWrap | null;
   color?: string | null;
+  borderRadius?: number | null;
+  borderColor?: string | null;
+  borderWidth?: number | null;
 }>;
 
 const innerContainerStyle: ViewStyle = {
@@ -27,6 +30,9 @@ const Flex_: React.FC<TProps> = ({
   margin = null,
   padding = null,
   color = null,
+  borderRadius = null,
+  borderColor = null,
+  borderWidth = null,
 }: TProps) => {
   const style = React.useMemo<ViewStyle>(() => {
     const marginFinal: TSplitResult = margin ? splitProp(margin) : {};
@@ -52,8 +58,22 @@ const Flex_: React.FC<TProps> = ({
       paddingVertical: paddingFinal.vertical,
       paddingHorizontal: paddingFinal.horizontal,
       backgroundColor: color ?? undefined,
+      borderRadius: borderRadius ?? undefined,
+      borderColor: borderColor ?? undefined,
+      borderWidth: borderWidth ?? undefined,
     };
-  }, [color, flex, flexDirection, justifyContent, margin, padding]);
+  }, [
+    borderColor,
+    borderRadius,
+    borderWidth,
+    color,
+    flex,
+    flexDirection,
+    justifyContent,
+    margin,
+    padding,
+  ]);
+
   return <View style={style}>{children}</View>;
 };
 
