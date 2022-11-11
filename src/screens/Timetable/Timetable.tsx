@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, Text, TouchableOpacity, ViewStyle} from 'react-native';
+import {FlatList, TouchableOpacity, ViewStyle} from 'react-native';
 
 import {observer} from 'mobx-react';
 import {Calendar} from 'react-native-calendars';
@@ -9,6 +9,9 @@ import timetable from '../../store/timetable';
 import moment from 'moment';
 import {Activity} from './Activity';
 import {Flex} from '../../components/Flex';
+import {Txt} from '../../components/Txt';
+import {getSortedByTime} from './get-sorted-by-time';
+import {TActivityList} from '../../types';
 
 const style: ViewStyle = {
   borderBottomWidth: 2,
@@ -30,18 +33,23 @@ const buttonStyle: ViewStyle = {
 type TPressDate = (day: DateData) => void;
 
 const Timetable_: React.FC<{}> = observer(() => {
-  const [date, setDate] = React.useState<string>(moment().format('YYYY-MM-DD'));
   const markedDates = timetable.markedDates;
+
+  const [date, setDate] = React.useState<string>(moment().format('YYYY-MM-DD'));
+  const sorted: TActivityList = getSortedByTime(
+    timetable.activities[date].slice(),
+  );
+
   const pressDay = React.useCallback<TPressDate>(day => {
     setDate(day.dateString);
   }, []);
 
   const addActivityForDate = React.useCallback(() => {
     timetable.addActivity({
-      activityId: '18:00|10', // <time>|<studentId>`
+      activityId: '01:10|10', // <time>|<studentId>`
       theme: 'Органическая химия. Новейшие разделы.',
       date,
-      time: '18:00',
+      time: '01:10',
       student: {
         name: 'Маргарита Иванова',
         id: 10,
@@ -62,7 +70,7 @@ const Timetable_: React.FC<{}> = observer(() => {
       />
       <Flex padding={15} color="white">
         <FlatList
-          data={timetable.activities[date]}
+          data={sorted}
           renderItem={({item}) => <Activity {...item} />}
         />
       </Flex>
@@ -70,7 +78,9 @@ const Timetable_: React.FC<{}> = observer(() => {
         style={buttonStyle}
         activeOpacity={0.6}
         onPress={addActivityForDate}>
-        <Text style={{color: 'white', fontSize: 25}}>+</Text>
+        <Txt color="white" size="xlg">
+          +
+        </Txt>
       </TouchableOpacity>
     </Screen>
   );

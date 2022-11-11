@@ -1,4 +1,8 @@
-export type TFontWeight = 'column' | 'row' | 'column-reverse' | 'row-reverse';
+export type TFlexDirection =
+  | 'column'
+  | 'row'
+  | 'column-reverse'
+  | 'row-reverse';
 
 export type TJustifyContent =
   | 'flex-start'
@@ -9,6 +13,8 @@ export type TJustifyContent =
   | 'space-evenly';
 
 export type TFlexWrap = 'wrap' | 'nowrap' | 'wrap-reverse';
+
+export type TFontSize = 'xsm' | 'sm' | 'md' | 'lg' | 'xlg';
 
 export interface IStudentItem {
   name: string;

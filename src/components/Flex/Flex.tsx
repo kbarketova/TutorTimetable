@@ -1,12 +1,12 @@
 import React from 'react';
 import {View, ViewStyle} from 'react-native';
-import {TFlexWrap, TFontWeight, TJustifyContent} from '../../types';
+import {TFlexWrap, TFlexDirection, TJustifyContent} from '../../types';
 import {splitProp} from '../split-prop';
 import {TSplitResult} from '../types';
 
 type TProps = Readonly<{
   children: React.ReactNode;
-  flexDirection?: TFontWeight | null;
+  flexDirection?: TFlexDirection | null;
   flex?: number | null;
   justifyContent?: TJustifyContent | null;
   margin?: number | string | null;
