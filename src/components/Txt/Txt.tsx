@@ -1,20 +1,23 @@
 import React from 'react';
 import {Text, TextStyle} from 'react-native';
-import {TFontSize} from '../../types';
+import {TAlignSelf, TFontWeight, TSize} from '../../types';
 
 type TProps = Readonly<{
   children: string;
   color?: string | null;
-  size?: TFontSize | null;
+  size?: TSize | null;
   flex?: number | null;
+  alignSelf?: TAlignSelf | null;
+  fontWeight?: TFontWeight | null;
 }>;
 
-const textSizes: Readonly<Record<TFontSize, number>> = {
+const textSizes: Readonly<Record<TSize, number>> = {
   xsm: 10,
   sm: 12,
   md: 15,
-  lg: 20,
-  xlg: 25,
+  lg: 18,
+  xlg: 20,
+  xxlg: 25,
 };
 
 const Txt_: React.FC<TProps> = ({
@@ -22,14 +25,18 @@ const Txt_: React.FC<TProps> = ({
   color = null,
   size = null,
   flex = null,
+  alignSelf = null,
+  fontWeight = null,
 }: TProps) => {
   const style = React.useMemo<TextStyle>(() => {
     return {
       color: color ?? undefined,
-      fontSize: textSizes[size ?? 'sm'],
+      fontSize: textSizes[size ?? 'md'],
       flex: flex ?? undefined,
+      fontWeight: fontWeight ?? undefined,
+      alignSelf: alignSelf ?? undefined,
     };
-  }, [color, size, flex]);
+  }, [alignSelf, color, flex, fontWeight, size]);
 
   return <Text style={style}>{children}</Text>;
 };

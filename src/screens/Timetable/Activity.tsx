@@ -22,7 +22,7 @@ const Activity_: React.FC<TProps> = ({student, time, color, theme}: TProps) => {
       </Txt>
       <Flex flex={3} color={color} padding={10} borderRadius={3}>
         {(header || headerSecondary) && (
-          <Txt color="white" size="sm">
+          <Txt color="white" size="md">
             {header || headerSecondary}
           </Txt>
         )}

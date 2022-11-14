@@ -3,7 +3,7 @@ import React from 'react';
 import {Field} from '../../components/Field';
 import {Screen} from '../../components/Screen';
 import {Contacts} from './Contacts';
-import {InfoRow} from './InfoRow';
+import {InfoRow} from '../../components/InfoRow';
 
 const StudentDetails_: React.FC<{}> = () => {
   const [studentName, setStudentName] = React.useState<string>('Иван Иванов');

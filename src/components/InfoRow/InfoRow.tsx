@@ -1,7 +1,7 @@
 import React from 'react';
 
-import {Field} from '../../components/Field';
-import {Flex} from '../../components/Flex';
+import {Field} from '../Field';
+import {Flex} from '../Flex';
 
 type TProps = Readonly<{
   isEditable: boolean;

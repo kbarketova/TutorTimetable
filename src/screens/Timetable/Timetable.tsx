@@ -12,6 +12,8 @@ import {Flex} from '../../components/Flex';
 import {Txt} from '../../components/Txt';
 import {getSortedByTime} from './get-sorted-by-time';
 import {TActivityList} from '../../types';
+import {useFlag} from '../../hooks/use-flag';
+import {AddActivity} from './AddActivity';
 
 const style: ViewStyle = {
   borderBottomWidth: 2,
@@ -35,10 +37,12 @@ type TPressDate = (day: DateData) => void;
 const Timetable_: React.FC<{}> = observer(() => {
   const markedDates = timetable.markedDates;
 
+  const [isAddVisible, openAdd, closeAdd] = useFlag();
   const [date, setDate] = React.useState<string>(moment().format('YYYY-MM-DD'));
-  const sorted: TActivityList = getSortedByTime(
-    timetable.activities[date].slice(),
-  );
+
+  const sorted: TActivityList = timetable.activities[date]
+    ? getSortedByTime(timetable.activities[date].slice())
+    : [];
 
   const pressDay = React.useCallback<TPressDate>(day => {
     setDate(day.dateString);
@@ -46,10 +50,10 @@ const Timetable_: React.FC<{}> = observer(() => {
 
   const addActivityForDate = React.useCallback(() => {
     timetable.addActivity({
-      activityId: '01:10|10', // <time>|<studentId>`
+      activityId: '18:10|10', // <time>|<studentId>`
       theme: 'Органическая химия. Новейшие разделы.',
       date,
-      time: '01:10',
+      time: '18:10',
       student: {
         name: 'Маргарита Иванова',
         id: 10,
@@ -77,11 +81,14 @@ const Timetable_: React.FC<{}> = observer(() => {
       <TouchableOpacity
         style={buttonStyle}
         activeOpacity={0.6}
-        onPress={addActivityForDate}>
+        onPress={openAdd}>
         <Txt color="white" size="xlg">
           +
         </Txt>
       </TouchableOpacity>
+      {isAddVisible && (
+        <AddActivity onAddActivity={addActivityForDate} onClose={closeAdd} />
+      )}
     </Screen>
   );
 });

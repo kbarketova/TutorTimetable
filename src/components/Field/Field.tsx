@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, TextStyle, ViewStyle} from 'react-native';
-import {GreenThemeTextColor} from '../../constants';
+import {BlueThemeInput} from '../../constants';
 import {Flex} from '../Flex';
 import {Input} from '../Input';
 
@@ -19,7 +19,7 @@ type TProps = Readonly<{
 const innerLabelStyle: TextStyle = {
   paddingVertical: 10,
   fontWeight: '400',
-  color: GreenThemeTextColor,
+  color: BlueThemeInput.textColorEnabled,
   fontSize: 15,
 };
 

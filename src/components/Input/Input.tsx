@@ -1,10 +1,7 @@
 import React from 'react';
 import {Platform, TextInput, TextStyle, ViewStyle} from 'react-native';
 
-import {
-  GreenThemeTextColor,
-  GreenThemeTextDisabledColor,
-} from '../../constants';
+import {BlueThemeInput} from '../../constants';
 import {splitProp} from '../split-prop';
 import {TSplitResult} from '../types';
 
@@ -22,32 +19,35 @@ const activeStyle: TextStyle = {
   height: 40,
   borderWidth: 2,
   borderRadius: 3,
-  borderColor: GreenThemeTextColor,
-  color: GreenThemeTextColor,
+  borderColor: BlueThemeInput.borderColorEnabled,
+  color: BlueThemeInput.textColorEnabled,
 };
 
 const disabledStyle: TextStyle = {
   ...activeStyle,
-  borderColor: GreenThemeTextDisabledColor,
-  color: GreenThemeTextDisabledColor,
+  borderColor: BlueThemeInput.textColorDisabled,
+  color: BlueThemeInput.textColorDisabled,
 };
 
 const Input_: React.FC<TProps> = ({
   value,
   onChangeText,
-  isEditable = null,
+  isEditable = null, // true
   margin = null,
   padding = null,
   multiline = null,
 }: TProps) => {
   const isAndroid: boolean = Platform.OS === 'android';
+  const isEditableFinal: boolean =
+    typeof isEditable === 'object' ? true : isEditable;
+
   const numberOfLinesFinal = isAndroid && multiline ? 3 : undefined;
   const textAlignVerticalFinal = isAndroid && multiline ? 'top' : undefined;
 
   const style = React.useMemo<ViewStyle>(() => {
     const marginFinal: TSplitResult = margin ? splitProp(margin) : {};
     const paddingFinal: TSplitResult = padding ? splitProp(padding) : {};
-    const mainStyle: ViewStyle = isEditable ? activeStyle : disabledStyle;
+    const mainStyle: ViewStyle = isEditableFinal ? activeStyle : disabledStyle;
 
     return {
       ...mainStyle,
@@ -67,7 +67,7 @@ const Input_: React.FC<TProps> = ({
       paddingVertical: paddingFinal.vertical,
       paddingHorizontal: paddingFinal.horizontal,
     };
-  }, [isEditable, margin, multiline, padding]);
+  }, [isEditableFinal, margin, multiline, padding]);
 
   return (
     <TextInput

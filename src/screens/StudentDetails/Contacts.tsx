@@ -3,7 +3,7 @@ import {Text, TextStyle} from 'react-native';
 
 import {Field} from '../../components/Field';
 import {Flex} from '../../components/Flex';
-import {InfoRow} from './InfoRow';
+import {InfoRow} from '../../components/InfoRow';
 
 type TProps = Readonly<{
   isEditable: boolean;

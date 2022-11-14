@@ -14,7 +14,43 @@ export type TJustifyContent =
 
 export type TFlexWrap = 'wrap' | 'nowrap' | 'wrap-reverse';
 
-export type TFontSize = 'xsm' | 'sm' | 'md' | 'lg' | 'xlg';
+export type TSize = 'xsm' | 'sm' | 'md' | 'lg' | 'xlg' | 'xxlg';
+
+export type TAlignContent =
+  | 'flex-start'
+  | 'flex-end'
+  | 'stretch'
+  | 'center'
+  | 'space-between'
+  | 'space-around';
+
+export type TAlignItems =
+  | 'stretch'
+  | 'flex-start'
+  | 'flex-end'
+  | 'center'
+  | 'baseline';
+
+export type TAlignSelf =
+  | 'auto'
+  | 'flex-start'
+  | 'flex-end'
+  | 'center'
+  | 'stretch'
+  | 'baseline';
+
+export type TFontWeight =
+  | 'normal'
+  | 'bold'
+  | '100'
+  | '200'
+  | '300'
+  | '400'
+  | '500'
+  | '600'
+  | '700'
+  | '800'
+  | '900';
 
 export interface IStudentItem {
   name: string;

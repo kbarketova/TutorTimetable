@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {ScrollView, ViewStyle} from 'react-native';
-import {GreenThemeBackground} from '../../constants';
+import {BlueThemeInput} from '../../constants';
 import {Flex} from '../Flex';
 
 type TProps = Readonly<{
@@ -14,7 +14,7 @@ type TProps = Readonly<{
 
 const innerContainerStyle: ViewStyle = {
   flex: 1,
-  backgroundColor: GreenThemeBackground,
+  backgroundColor: BlueThemeInput.backgroundColor,
 };
 
 const Screen_: React.FC<TProps> = ({
