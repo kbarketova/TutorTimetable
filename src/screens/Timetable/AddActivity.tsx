@@ -1,10 +1,10 @@
 import React from 'react';
 import {Modal} from 'react-native';
 
-import {Button} from '../../components/Button';
 import {Field} from '../../components/Field';
 import {Flex} from '../../components/Flex';
 import {InfoRow} from '../../components/InfoRow';
+import {ModalButtons} from '../../components/ModalButtons';
 import {Switcher} from '../../components/Switcher';
 import {Txt} from '../../components/Txt';
 import {useFlag} from '../../hooks/use-flag';
@@ -20,6 +20,7 @@ const AddActivity_: React.FC<TProps> = ({onAddActivity, onClose}: TProps) => {
   const [name, setName] = React.useState<string>('');
   const [phone, setPhone] = React.useState<string>('');
   const [address, setAddress] = React.useState<string>('');
+  const [time, setTime] = React.useState<string>('10:00');
 
   const addActivity = React.useCallback(() => {
     onAddActivity();
@@ -47,24 +48,12 @@ const AddActivity_: React.FC<TProps> = ({onAddActivity, onClose}: TProps) => {
           isEnabled={isEnabled}
           onToggle={toggleSwitch}
           label="Сохранить данные ученика"
-          flex={0}
         />
-        <Flex flexDirection="row" alignItems="flex-end">
-          <Button
-            color="steelblue"
-            borderRadius={25}
-            margin="0 10"
-            label="Отменить"
-            onPress={onClose}
-          />
-          <Button
-            color="deepskyblue"
-            borderRadius={25}
-            margin="0 10"
-            label="Добавить"
-            onPress={addActivity}
-          />
-        </Flex>
+        <ModalButtons
+          label="Добавить"
+          onSave={addActivity}
+          onCancel={onClose}
+        />
       </Flex>
     </Modal>
   );

@@ -12,7 +12,7 @@ type TProps = Readonly<{
 }>;
 
 const innerContainerStyle: ViewStyle = {
-  flex: 1,
+  flex: 0,
 };
 
 const Switcher_: React.FC<TProps> = ({
