@@ -14,6 +14,7 @@ type TProps = Readonly<{
   labelSize?: number | null;
   labelWeight?: string | null;
   isMultiline?: boolean | null;
+  color?: string | null;
 }>;
 
 const innerLabelStyle: TextStyle = {
@@ -33,14 +34,16 @@ const Field_: React.FC<TProps> = ({
   labelSize = null,
   labelWeight = null,
   isMultiline = null,
+  color = null,
 }: TProps) => {
   const labelStyle = React.useMemo<ViewStyle>(() => {
     return {
       ...innerLabelStyle,
       fontSize: labelSize ?? innerLabelStyle.fontSize,
       fontWeight: labelWeight ?? innerLabelStyle.fontWeight,
+      backgroundColor: color ?? undefined,
     };
-  }, [labelSize, labelWeight]);
+  }, [color, labelSize, labelWeight]);
 
   return (
     <Flex>

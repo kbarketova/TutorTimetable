@@ -8,6 +8,7 @@ import {ModalButtons} from '../../components/ModalButtons';
 import {Switcher} from '../../components/Switcher';
 import {Txt} from '../../components/Txt';
 import {useFlag} from '../../hooks/use-flag';
+import {TimePicker} from './TimePicker';
 
 type TProps = Readonly<{
   onAddActivity: () => void;
@@ -15,13 +16,13 @@ type TProps = Readonly<{
 }>;
 
 const AddActivity_: React.FC<TProps> = ({onAddActivity, onClose}: TProps) => {
-  const [isEnabled, , , toggleSwitch] = useFlag();
+  const [isSaveEnabled, , , toggleSave] = useFlag();
+
   const [theme, setTheme] = React.useState<string>('');
   const [name, setName] = React.useState<string>('');
   const [phone, setPhone] = React.useState<string>('');
   const [address, setAddress] = React.useState<string>('');
-  const [time, setTime] = React.useState<string>('10:00');
-
+  const [time, setTime] = React.useState<string>('');
   const addActivity = React.useCallback(() => {
     onAddActivity();
     onClose();
@@ -30,7 +31,7 @@ const AddActivity_: React.FC<TProps> = ({onAddActivity, onClose}: TProps) => {
   return (
     <Modal animationType="fade" visible onRequestClose={onClose}>
       <Flex margin={10}>
-        <Txt size="xxlg" alignSelf="center" fontWeight="bold">
+        <Txt size="lg" alignSelf="center" fontWeight="bold">
           Занятие
         </Txt>
         <InfoRow
@@ -43,10 +44,11 @@ const AddActivity_: React.FC<TProps> = ({onAddActivity, onClose}: TProps) => {
           onChangeTextAdditional={setPhone}
         />
         <Field label="Тема занятия" value={theme} onChangeText={setTheme} />
+        <TimePicker time={time} onChangeTime={setTime} />
         <Field label="Адрес" value={address} onChangeText={setAddress} />
         <Switcher
-          isEnabled={isEnabled}
-          onToggle={toggleSwitch}
+          isEnabled={isSaveEnabled}
+          onToggle={toggleSave}
           label="Сохранить данные ученика"
         />
         <ModalButtons

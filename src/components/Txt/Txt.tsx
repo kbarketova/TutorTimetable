@@ -12,12 +12,9 @@ type TProps = Readonly<{
 }>;
 
 const textSizes: Readonly<Record<TSize, number>> = {
-  xsm: 10,
   sm: 12,
   md: 15,
-  lg: 18,
-  xlg: 20,
-  xxlg: 25,
+  lg: 25,
 };
 
 const Txt_: React.FC<TProps> = ({

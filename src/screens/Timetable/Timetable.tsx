@@ -82,7 +82,7 @@ const Timetable_: React.FC<{}> = observer(() => {
         style={buttonStyle}
         activeOpacity={0.6}
         onPress={openAdd}>
-        <Txt color="white" size="xlg">
+        <Txt color="white" size="lg">
           +
         </Txt>
       </TouchableOpacity>

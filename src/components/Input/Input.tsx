@@ -2,8 +2,15 @@ import React from 'react';
 import {Platform, TextInput, TextStyle, ViewStyle} from 'react-native';
 
 import {BlueThemeInput} from '../../constants';
+import {TSize} from '../../types';
 import {splitProp} from '../split-prop';
 import {TSplitResult} from '../types';
+
+type TInputSize = TSize | 'none';
+
+type TInputSizeParams = Readonly<{
+  width: number | undefined;
+}>;
 
 type TProps = Readonly<{
   value: string;
@@ -12,10 +19,17 @@ type TProps = Readonly<{
   margin?: number | string | null;
   padding?: number | string | null;
   multiline?: boolean | null;
+  size?: TInputSize | null;
 }>;
 
+const inputSizes: Readonly<Record<TInputSize, TInputSizeParams>> = {
+  none: {width: undefined},
+  sm: {width: 40},
+  md: {width: 120},
+  lg: {width: 160},
+};
+
 const activeStyle: TextStyle = {
-  flex: 1,
   height: 40,
   borderWidth: 2,
   borderRadius: 3,
@@ -36,6 +50,7 @@ const Input_: React.FC<TProps> = ({
   margin = null,
   padding = null,
   multiline = null,
+  size = null,
 }: TProps) => {
   const isAndroid: boolean = Platform.OS === 'android';
   const isEditableFinal: boolean =
@@ -48,9 +63,12 @@ const Input_: React.FC<TProps> = ({
     const marginFinal: TSplitResult = margin ? splitProp(margin) : {};
     const paddingFinal: TSplitResult = padding ? splitProp(padding) : {};
     const mainStyle: ViewStyle = isEditableFinal ? activeStyle : disabledStyle;
+    const sizeFinal: TInputSize = size ?? 'none';
 
     return {
       ...mainStyle,
+      ...inputSizes[sizeFinal],
+      flex: sizeFinal === 'none' ? 0 : 1,
       height: multiline ? undefined : mainStyle.height,
       margin: marginFinal.all,
       marginLeft: marginFinal.left,
@@ -67,7 +85,7 @@ const Input_: React.FC<TProps> = ({
       paddingVertical: paddingFinal.vertical,
       paddingHorizontal: paddingFinal.horizontal,
     };
-  }, [isEditableFinal, margin, multiline, padding]);
+  }, [isEditableFinal, margin, multiline, padding, size]);
 
   return (
     <TextInput

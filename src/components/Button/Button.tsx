@@ -1,5 +1,7 @@
 import React from 'react';
 import {TouchableOpacity, ViewStyle} from 'react-native';
+
+import Icon from 'react-native-vector-icons/Feather';
 import {
   TAlignContent,
   TAlignItems,
@@ -12,8 +14,8 @@ import {Txt} from '../Txt';
 import {TSplitResult} from '../types';
 
 type TProps = Readonly<{
-  label: string;
   onPress: () => void;
+  label?: string | null;
   flex?: number | null;
   justifyContent?: TJustifyContent | null;
   alignContent?: TAlignContent | null;
@@ -27,15 +29,13 @@ type TProps = Readonly<{
   borderWidth?: number | null;
   opacity?: number | null;
   size?: TSize | null;
+  iconName?: string | null;
 }>;
 
 const buttonHeightSizes: Readonly<Record<TSize, number>> = {
-  xsm: 35,
   sm: 40,
   md: 45,
   lg: 60,
-  xlg: 70,
-  xxlg: 80,
 };
 
 const innerContainerStyle: ViewStyle = {
@@ -43,8 +43,8 @@ const innerContainerStyle: ViewStyle = {
 };
 
 const Button_: React.FC<TProps> = ({
-  label,
   onPress,
+  label = null,
   flex = null,
   justifyContent = null,
   alignContent = null,
@@ -57,6 +57,7 @@ const Button_: React.FC<TProps> = ({
   borderWidth = null,
   opacity = null,
   size = null,
+  iconName = null,
 }: TProps) => {
   const style = React.useMemo<ViewStyle>(() => {
     const marginFinal: TSplitResult = margin ? splitProp(margin) : {};
@@ -101,14 +102,27 @@ const Button_: React.FC<TProps> = ({
     size,
   ]);
 
+  if (!label && !iconName) {
+    return (
+      <TouchableOpacity
+        style={style}
+        activeOpacity={opacity ?? 0.6}
+        onPress={onPress}
+      />
+    );
+  }
+
   return (
     <TouchableOpacity
       style={style}
       activeOpacity={opacity ?? 0.6}
       onPress={onPress}>
-      <Txt size="md" color="white">
-        {label}
-      </Txt>
+      {!!iconName && <Icon name={iconName} size={30} />}
+      {!!label && (
+        <Txt size="md" color="white">
+          {label}
+        </Txt>
+      )}
     </TouchableOpacity>
   );
 };

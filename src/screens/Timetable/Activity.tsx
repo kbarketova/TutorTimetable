@@ -17,7 +17,7 @@ const Activity_: React.FC<TProps> = ({student, time, color, theme}: TProps) => {
 
   return (
     <Flex flexDirection="row" margin="0 0 10 0">
-      <Txt flex={1} size="xlg" color="deepskyblue">
+      <Txt flex={1} size="lg" color="deepskyblue">
         {time}
       </Txt>
       <Flex flex={3} color={color} padding={10} borderRadius={3}>

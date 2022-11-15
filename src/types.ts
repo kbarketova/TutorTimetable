@@ -14,7 +14,7 @@ export type TJustifyContent =
 
 export type TFlexWrap = 'wrap' | 'nowrap' | 'wrap-reverse';
 
-export type TSize = 'xsm' | 'sm' | 'md' | 'lg' | 'xlg' | 'xxlg';
+export type TSize = 'sm' | 'md' | 'lg';
 
 export type TAlignContent =
   | 'flex-start'
