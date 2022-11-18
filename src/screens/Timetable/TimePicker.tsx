@@ -38,12 +38,16 @@ const TimePicker_: React.FC<TProps> = ({time, onChangeTime}: TProps) => {
     [closeDatePicker, onChangeTime],
   );
 
-  console.log('isDatePickerOpen', isDatePickerOpen);
   return (
     <>
-      <Flex flexDirection="row" alignItems="center">
-        <Input value={time} onChangeText={onChangeTime} margin="0 10" />
-        <Button onPress={openDatePicker} iconName="clock" flex={0} />
+      <Flex flexDirection="row" alignItems="center" flex={0} margin="10 0 0 0">
+        <Button
+          onPress={openDatePicker}
+          iconName="clock"
+          flex={0}
+          margin="0 10 0 0"
+        />
+        <Input value={time} onChangeText={onChangeTime} size="sm" />
       </Flex>
       {isDatePickerOpen && (
         <DatePicker

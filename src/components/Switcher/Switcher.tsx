@@ -25,7 +25,8 @@ const Switcher_: React.FC<TProps> = ({
     <Flex
       flexDirection="row"
       flex={flex ?? innerContainerStyle.flex}
-      alignItems="center">
+      alignItems="center"
+      margin="10 0">
       <Switch
         trackColor={{
           false: BlueThemeSwither.trackColorDisabled,

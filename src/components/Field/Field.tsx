@@ -15,6 +15,7 @@ type TProps = Readonly<{
   labelWeight?: string | null;
   isMultiline?: boolean | null;
   color?: string | null;
+  flex?: number | null;
 }>;
 
 const innerLabelStyle: TextStyle = {
@@ -35,6 +36,7 @@ const Field_: React.FC<TProps> = ({
   labelWeight = null,
   isMultiline = null,
   color = null,
+  flex = null,
 }: TProps) => {
   const labelStyle = React.useMemo<ViewStyle>(() => {
     return {
@@ -46,7 +48,7 @@ const Field_: React.FC<TProps> = ({
   }, [color, labelSize, labelWeight]);
 
   return (
-    <Flex>
+    <Flex flex={flex} color={color}>
       {!!label && <Text style={labelStyle}>{label}</Text>}
       <Input
         onChangeText={onChangeText}

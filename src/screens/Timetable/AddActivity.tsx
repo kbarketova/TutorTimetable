@@ -1,10 +1,8 @@
 import React from 'react';
-import {Modal} from 'react-native';
 
 import {Field} from '../../components/Field';
-import {Flex} from '../../components/Flex';
 import {InfoRow} from '../../components/InfoRow';
-import {ModalButtons} from '../../components/ModalButtons';
+import {Modal} from '../../components/Modal';
 import {Switcher} from '../../components/Switcher';
 import {Txt} from '../../components/Txt';
 import {useFlag} from '../../hooks/use-flag';
@@ -29,34 +27,33 @@ const AddActivity_: React.FC<TProps> = ({onAddActivity, onClose}: TProps) => {
   }, [onAddActivity, onClose]);
 
   return (
-    <Modal animationType="fade" visible onRequestClose={onClose}>
-      <Flex margin={10}>
-        <Txt size="lg" alignSelf="center" fontWeight="bold">
-          Занятие
-        </Txt>
-        <InfoRow
-          isEditable
-          label="Имя"
-          value={name}
-          onChangeText={setName}
-          labelAdditional="Телефон"
-          valueAdditional={phone}
-          onChangeTextAdditional={setPhone}
-        />
-        <Field label="Тема занятия" value={theme} onChangeText={setTheme} />
-        <TimePicker time={time} onChangeTime={setTime} />
-        <Field label="Адрес" value={address} onChangeText={setAddress} />
-        <Switcher
-          isEnabled={isSaveEnabled}
-          onToggle={toggleSave}
-          label="Сохранить данные ученика"
-        />
-        <ModalButtons
-          label="Добавить"
-          onSave={addActivity}
-          onCancel={onClose}
-        />
-      </Flex>
+    <Modal label="Добавить" onPress={addActivity} onCancel={onClose}>
+      <Txt size="lg" alignSelf="center" fontWeight="bold">
+        Занятие
+      </Txt>
+      <InfoRow
+        isEditable
+        label="Имя"
+        value={name}
+        onChangeText={setName}
+        labelAdditional="Телефон"
+        valueAdditional={phone}
+        onChangeTextAdditional={setPhone}
+        flex={0}
+      />
+      <Field
+        label="Тема занятия"
+        value={theme}
+        onChangeText={setTheme}
+        flex={0}
+      />
+      <TimePicker time={time} onChangeTime={setTime} />
+      <Field label="Адрес" value={address} onChangeText={setAddress} flex={0} />
+      <Switcher
+        isEnabled={isSaveEnabled}
+        onToggle={toggleSave}
+        label="Сохранить данные ученика"
+      />
     </Modal>
   );
 };

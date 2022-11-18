@@ -2,6 +2,7 @@ import React from 'react';
 import {Platform, TextInput, TextStyle, ViewStyle} from 'react-native';
 
 import {BlueThemeInput} from '../../constants';
+import {useFlag} from '../../hooks/use-flag';
 import {TSize} from '../../types';
 import {splitProp} from '../split-prop';
 import {TSplitResult} from '../types';
@@ -46,29 +47,30 @@ const disabledStyle: TextStyle = {
 const Input_: React.FC<TProps> = ({
   value,
   onChangeText,
-  isEditable = null, // true
+  isEditable = true,
   margin = null,
   padding = null,
   multiline = null,
   size = null,
 }: TProps) => {
+  const [isFocused, setFocused, setUnfocused] = useFlag();
   const isAndroid: boolean = Platform.OS === 'android';
-  const isEditableFinal: boolean =
-    typeof isEditable === 'object' ? true : isEditable;
-
   const numberOfLinesFinal = isAndroid && multiline ? 3 : undefined;
   const textAlignVerticalFinal = isAndroid && multiline ? 'top' : undefined;
 
   const style = React.useMemo<ViewStyle>(() => {
     const marginFinal: TSplitResult = margin ? splitProp(margin) : {};
     const paddingFinal: TSplitResult = padding ? splitProp(padding) : {};
-    const mainStyle: ViewStyle = isEditableFinal ? activeStyle : disabledStyle;
+    const mainStyle: ViewStyle = isEditable ? activeStyle : disabledStyle;
     const sizeFinal: TInputSize = size ?? 'none';
 
     return {
       ...mainStyle,
       ...inputSizes[sizeFinal],
-      flex: sizeFinal === 'none' ? 0 : 1,
+      borderColor:
+        isFocused && isEditable
+          ? BlueThemeInput.focused
+          : mainStyle.borderColor,
       height: multiline ? undefined : mainStyle.height,
       margin: marginFinal.all,
       marginLeft: marginFinal.left,
@@ -85,7 +87,11 @@ const Input_: React.FC<TProps> = ({
       paddingVertical: paddingFinal.vertical,
       paddingHorizontal: paddingFinal.horizontal,
     };
-  }, [isEditableFinal, margin, multiline, padding, size]);
+  }, [isEditable, isFocused, margin, multiline, padding, size]);
+
+  const focus = React.useCallback(() => setFocused(), [setFocused]);
+
+  const blur = React.useCallback(() => setUnfocused(), [setUnfocused]);
 
   return (
     <TextInput
@@ -96,6 +102,8 @@ const Input_: React.FC<TProps> = ({
       multiline={multiline ?? undefined}
       textAlignVertical={textAlignVerticalFinal}
       numberOfLines={numberOfLinesFinal}
+      onFocus={focus}
+      onBlur={blur}
     />
   );
 };

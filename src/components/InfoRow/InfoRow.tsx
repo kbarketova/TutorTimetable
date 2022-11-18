@@ -11,6 +11,7 @@ type TProps = Readonly<{
   labelAdditional?: string | null;
   valueAdditional?: string | null;
   onChangeTextAdditional?: ((value: string) => void) | null;
+  flex?: number | null;
 }>;
 
 const InfoRow_: React.FC<TProps> = ({
@@ -21,9 +22,10 @@ const InfoRow_: React.FC<TProps> = ({
   labelAdditional = null,
   valueAdditional = null,
   onChangeTextAdditional = null,
+  flex = null,
 }: TProps) => {
   return (
-    <Flex flexDirection="row" justifyContent="space-between">
+    <Flex flexDirection="row" justifyContent="space-between" flex={flex}>
       <Field
         label={label}
         value={value}

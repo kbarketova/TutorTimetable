@@ -1,5 +1,6 @@
-const Colors = {
+export const Colors = {
   sky: 'deepskyblue',
+  skyDark: 'steelblue',
   grayLight: 'gainsboro',
   grayDark: '#767577',
   grayGhost: '#f4f3f4',
@@ -7,10 +8,11 @@ const Colors = {
 
 export const BlueThemeInput = {
   backgroundColor: 'white',
-  borderColorDisabled: 'gainsboro',
-  borderColorEnabled: '#767577',
-  textColorDisabled: 'gainsboro',
+  borderColorDisabled: Colors.grayLight,
+  borderColorEnabled: Colors.grayDark,
+  textColorDisabled: Colors.grayLight,
   textColorEnabled: '#000000',
+  focused: Colors.sky,
 };
 
 export const BlueThemeSwither = {

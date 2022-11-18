@@ -1,35 +1,36 @@
 import React from 'react';
+import {Colors} from '../../constants';
 import {Button} from '../Button';
 import {Flex} from '../Flex';
 
 type TProps = Readonly<{
-  onSave: () => void;
+  onPress: () => void;
   onCancel: () => void;
   label?: string | null;
   cancelLabel?: string | null;
 }>;
 
 const ModalButtons_: React.FC<TProps> = ({
-  onSave,
+  onPress,
   onCancel,
   label = null,
   cancelLabel = null,
 }: TProps) => {
   return (
-    <Flex flexDirection="row" alignItems="flex-end">
+    <Flex flexDirection="row" alignItems="flex-end" flex={0}>
       <Button
-        color="steelblue"
+        color={Colors.skyDark}
         borderRadius={25}
         margin="0 10"
         label={cancelLabel ?? 'Отменить'}
         onPress={onCancel}
       />
       <Button
-        color="deepskyblue"
+        color={Colors.sky}
         borderRadius={25}
         margin="0 10"
         label={label ?? 'Сохранить'}
-        onPress={onSave}
+        onPress={onPress}
       />
     </Flex>
   );
