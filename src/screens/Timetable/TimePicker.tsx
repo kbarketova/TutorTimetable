@@ -21,7 +21,6 @@ const TimePicker_: React.FC<TProps> = ({time, onChangeTime}: TProps) => {
     const d = new Date();
     if (time) {
       const [hours, mins] = time.split(':');
-      console.log('time', time);
       d.setHours(+hours, +mins, 0, 0);
     }
     return d;
@@ -30,8 +29,6 @@ const TimePicker_: React.FC<TProps> = ({time, onChangeTime}: TProps) => {
   const changeTime = React.useCallback<TOnChangeTime>(
     date => {
       const timeNew: string = moment(date.getTime()).format('HH:mm');
-      console.log('changeTime date', date, 'timeNew', timeNew);
-
       onChangeTime(timeNew);
       closeDatePicker();
     },

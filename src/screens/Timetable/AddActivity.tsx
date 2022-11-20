@@ -27,7 +27,7 @@ const AddActivity_: React.FC<TProps> = ({onAddActivity, onClose}: TProps) => {
   }, [onAddActivity, onClose]);
 
   return (
-    <Modal label="Добавить" onPress={addActivity} onCancel={onClose}>
+    <Modal label="Добавить" onPress={addActivity} onClose={onClose}>
       <Txt size="lg" alignSelf="center" fontWeight="bold">
         Занятие
       </Txt>

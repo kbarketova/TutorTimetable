@@ -1,6 +1,7 @@
 import React from 'react';
 import {SafeAreaView, StatusBar, ViewStyle} from 'react-native';
-import {StudentDetails} from './src/screens/StudentDetails';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {Timetable} from './src/screens/Timetable';
 
 const containerStyle: ViewStyle = {
   flex: 1,
@@ -8,10 +9,13 @@ const containerStyle: ViewStyle = {
 
 const App = () => {
   return (
-    <SafeAreaView style={containerStyle}>
-      <StatusBar barStyle={'light-content'} />
-      <StudentDetails />
-    </SafeAreaView>
+    <GestureHandlerRootView style={containerStyle}>
+      <SafeAreaView style={containerStyle}>
+        <StatusBar barStyle={'light-content'} />
+        {/* <StudentDetails /> */}
+        <Timetable />
+      </SafeAreaView>
+    </GestureHandlerRootView>
   );
 };
 
