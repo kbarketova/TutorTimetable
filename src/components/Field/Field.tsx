@@ -1,8 +1,9 @@
 import React from 'react';
-import {Text, TextStyle, ViewStyle} from 'react-native';
-import {BlueThemeInput} from '../../constants';
+
+import {TFontWeight, TPropsTxt, TSize} from '../../types';
 import {Flex} from '../Flex';
 import {Input} from '../Input';
+import {Txt} from '../Txt';
 
 type TProps = Readonly<{
   value: string;
@@ -11,19 +12,12 @@ type TProps = Readonly<{
   label?: string | null;
   inputMargin?: number | string | null;
   inputPadding?: number | string | null;
-  labelSize?: number | null;
-  labelWeight?: string | null;
+  labelSize?: TSize | null;
+  labelWeight?: TFontWeight | null;
   isMultiline?: boolean | null;
   color?: string | null;
   flex?: number | null;
 }>;
-
-const innerLabelStyle: TextStyle = {
-  paddingVertical: 10,
-  fontWeight: '400',
-  color: BlueThemeInput.textColorEnabled,
-  fontSize: 15,
-};
 
 const Field_: React.FC<TProps> = ({
   value,
@@ -38,18 +32,17 @@ const Field_: React.FC<TProps> = ({
   color = null,
   flex = null,
 }: TProps) => {
-  const labelStyle = React.useMemo<ViewStyle>(() => {
+  const labelStyle = React.useMemo<TPropsTxt>(() => {
     return {
-      ...innerLabelStyle,
-      fontSize: labelSize ?? innerLabelStyle.fontSize,
-      fontWeight: labelWeight ?? innerLabelStyle.fontWeight,
-      backgroundColor: color ?? undefined,
+      padding: '10 0',
+      size: labelSize ?? 'md',
+      fontWeight: labelWeight ?? undefined,
     };
-  }, [color, labelSize, labelWeight]);
+  }, [labelSize, labelWeight]);
 
   return (
     <Flex flex={flex} color={color}>
-      {!!label && <Text style={labelStyle}>{label}</Text>}
+      {!!label && <Txt {...labelStyle}>{label}</Txt>}
       <Input
         onChangeText={onChangeText}
         value={value}

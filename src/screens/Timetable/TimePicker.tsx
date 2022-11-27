@@ -6,6 +6,7 @@ import {Button} from '../../components/Button';
 import {Input} from '../../components/Input';
 import {useFlag} from '../../hooks/use-flag';
 import {Flex} from '../../components/Flex';
+import {Txt} from '../../components/Txt';
 
 type TProps = Readonly<{
   time: string;
@@ -37,7 +38,8 @@ const TimePicker_: React.FC<TProps> = ({time, onChangeTime}: TProps) => {
 
   return (
     <>
-      <Flex flexDirection="row" alignItems="center" flex={0} margin="10 0 0 0">
+      <Txt padding="10 0">Время</Txt>
+      <Flex flexDirection="row" alignItems="center" flex={0}>
         <Button
           onPress={openDatePicker}
           iconName="clock"

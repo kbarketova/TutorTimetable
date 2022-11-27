@@ -14,6 +14,8 @@ import {getSortedByTime} from './get-sorted-by-time';
 import {TActivityList} from '../../types';
 import {useFlag} from '../../hooks/use-flag';
 import {AddActivity} from './AddActivity';
+import {TOnAddActivity} from './types';
+import {getRandomColor} from '../../get-random-color';
 
 const style: ViewStyle = {
   borderBottomWidth: 2,
@@ -48,20 +50,17 @@ const Timetable_: React.FC<{}> = observer(() => {
     setDate(day.dateString);
   }, []);
 
-  const addActivityForDate = React.useCallback(() => {
-    timetable.addActivity({
-      activityId: '18:10|10', // <time>|<studentId>`
-      theme: 'Органическая химия. Новейшие разделы.',
-      date,
-      time: '18:10',
-      student: {
-        name: 'Маргарита Иванова',
-        id: 10,
-      },
-      color: '#4b0082',
-      address: 'ул. Караимская 32, кв 8',
-    });
-  }, [date]);
+  const addActivityForDate = React.useCallback<TOnAddActivity>(
+    data => {
+      timetable.addActivity({
+        ...data,
+        activityId: `${data.time}|${data.student.id}`,
+        date,
+        color: getRandomColor(),
+      });
+    },
+    [date],
+  );
 
   return (
     <Screen padding={0}>

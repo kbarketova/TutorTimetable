@@ -33,8 +33,8 @@ type TProps = Readonly<{
 }>;
 
 const buttonHeightSizes: Readonly<Record<TSize, number>> = {
-  sm: 40,
-  md: 45,
+  sm: 45,
+  md: 50,
   lg: 60,
 };
 

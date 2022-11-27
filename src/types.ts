@@ -52,6 +52,15 @@ export type TFontWeight =
   | '800'
   | '900';
 
+export type TPropsTxt = Readonly<{
+  color?: string | null;
+  size?: TSize | null;
+  flex?: number | null;
+  alignSelf?: TAlignSelf | null;
+  fontWeight?: TFontWeight | null;
+  padding?: number | string | null;
+}>;
+
 export interface IStudentItem {
   name: string;
   id: number;
@@ -74,3 +83,5 @@ export interface IActivity {
 export type TActivityList = Array<IActivity>;
 
 export type TTimetable = Record<string, TActivityList>;
+
+export type IStudentItemList = Array<IStudentItem>;

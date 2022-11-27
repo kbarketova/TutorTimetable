@@ -4,7 +4,22 @@ export const Colors = {
   grayLight: 'gainsboro',
   grayDark: '#767577',
   grayGhost: '#f4f3f4',
+  seaGreen: 'darkseagreen',
+  green: 'forestgreen',
+  greenLight: 'mediumturquoise',
+  orangeDark: 'peru',
+  pink: 'plum',
+  darkBlue: 'royalblue',
 };
+
+export const TimetableColorsList: ReadonlyArray<string> = [
+  Colors.seaGreen,
+  Colors.green,
+  Colors.greenLight,
+  Colors.orangeDark,
+  Colors.pink,
+  Colors.darkBlue,
+];
 
 export const BlueThemeInput = {
   backgroundColor: 'white',

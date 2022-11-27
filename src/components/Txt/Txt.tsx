@@ -1,20 +1,24 @@
 import React from 'react';
 import {Text, TextStyle} from 'react-native';
-import {TAlignSelf, TFontWeight, TSize} from '../../types';
-
-type TProps = Readonly<{
-  children: string;
-  color?: string | null;
-  size?: TSize | null;
-  flex?: number | null;
-  alignSelf?: TAlignSelf | null;
-  fontWeight?: TFontWeight | null;
-}>;
+import {BlueThemeInput} from '../../constants';
+import {TPropsTxt, TSize} from '../../types';
+import {splitProp} from '../split-prop';
+import {TSplitResult} from '../types';
 
 const textSizes: Readonly<Record<TSize, number>> = {
   sm: 12,
-  md: 15,
+  md: 16,
   lg: 25,
+};
+
+type TProps = TPropsTxt &
+  Readonly<{
+    children: string;
+  }>;
+
+const innerLabelStyle: TextStyle = {
+  fontWeight: '400',
+  color: BlueThemeInput.textColorEnabled,
 };
 
 const Txt_: React.FC<TProps> = ({
@@ -24,16 +28,25 @@ const Txt_: React.FC<TProps> = ({
   flex = null,
   alignSelf = null,
   fontWeight = null,
+  padding = null,
 }: TProps) => {
   const style = React.useMemo<TextStyle>(() => {
+    const paddingFinal: TSplitResult = padding ? splitProp(padding) : {};
     return {
-      color: color ?? undefined,
+      color: color ?? innerLabelStyle.color,
       fontSize: textSizes[size ?? 'md'],
       flex: flex ?? undefined,
-      fontWeight: fontWeight ?? undefined,
+      fontWeight: fontWeight ?? innerLabelStyle.fontWeight,
       alignSelf: alignSelf ?? undefined,
+      padding: paddingFinal.all,
+      paddingLeft: paddingFinal.left,
+      paddingRight: paddingFinal.right,
+      paddingTop: paddingFinal.top,
+      paddingBottom: paddingFinal.bottom,
+      paddingVertical: paddingFinal.vertical,
+      paddingHorizontal: paddingFinal.horizontal,
     };
-  }, [alignSelf, color, flex, fontWeight, size]);
+  }, [alignSelf, color, flex, fontWeight, padding, size]);
 
   return <Text style={style}>{children}</Text>;
 };

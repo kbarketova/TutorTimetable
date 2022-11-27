@@ -25,7 +25,7 @@ type TProps = Readonly<{
 
 const inputSizes: Readonly<Record<TInputSize, TInputSizeParams>> = {
   none: {width: undefined},
-  sm: {width: 40},
+  sm: {width: 45},
   md: {width: 120},
   lg: {width: 160},
 };
