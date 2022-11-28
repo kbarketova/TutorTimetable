@@ -11,11 +11,11 @@ import {Activity} from './Activity';
 import {Flex} from '../../components/Flex';
 import {Txt} from '../../components/Txt';
 import {getSortedByTime} from './get-sorted-by-time';
-import {TActivityList} from '../../types';
+import {IActivity, TActivityList} from '../../types';
 import {useFlag} from '../../hooks/use-flag';
 import {AddActivity} from './AddActivity';
-import {TOnAddActivity} from './types';
-import {getRandomColor} from '../../get-random-color';
+import {TOnAddActivity, TOnEditActivity, TOnOpenActivity} from './types';
+import {getRandomColor} from '../../utils/get-random-color';
 
 const style: ViewStyle = {
   borderBottomWidth: 2,
@@ -40,26 +40,50 @@ const Timetable_: React.FC<{}> = observer(() => {
   const markedDates = timetable.markedDates;
 
   const [isAddVisible, openAdd, closeAdd] = useFlag();
+
+  const [activity, setActivity] = React.useState<IActivity | null>(null);
   const [date, setDate] = React.useState<string>(moment().format('YYYY-MM-DD'));
 
   const sorted: TActivityList = timetable.activities[date]
     ? getSortedByTime(timetable.activities[date].slice())
     : [];
 
+  const closeActivityModal = React.useCallback(() => {
+    closeAdd();
+    setActivity(null);
+  }, [closeAdd]);
+
   const pressDay = React.useCallback<TPressDate>(day => {
     setDate(day.dateString);
+  }, []);
+
+  const editActivity = React.useCallback<TOnEditActivity>(data => {
+    timetable.editActivity(data);
   }, []);
 
   const addActivityForDate = React.useCallback<TOnAddActivity>(
     data => {
       timetable.addActivity({
         ...data,
-        activityId: `${data.time}|${data.student.id}`,
+        activityId: `${date}|${data.student.id}`,
         date,
         color: getRandomColor(),
       });
     },
     [date],
+  );
+
+  const openActivity = React.useCallback<TOnOpenActivity>(
+    id => {
+      const actv = timetable.getActivity(id);
+      if (!actv) {
+        console.log('cannot open activity');
+        return;
+      }
+      setActivity(actv);
+      openAdd();
+    },
+    [openAdd],
   );
 
   return (
@@ -74,7 +98,9 @@ const Timetable_: React.FC<{}> = observer(() => {
       <Flex padding={15} color="white">
         <FlatList
           data={sorted}
-          renderItem={({item}) => <Activity {...item} />}
+          renderItem={({item}) => (
+            <Activity item={item} onPress={openActivity} />
+          )}
         />
       </Flex>
       <TouchableOpacity
@@ -86,7 +112,12 @@ const Timetable_: React.FC<{}> = observer(() => {
         </Txt>
       </TouchableOpacity>
       {isAddVisible && (
-        <AddActivity onAddActivity={addActivityForDate} onClose={closeAdd} />
+        <AddActivity
+          onAdd={addActivityForDate}
+          onEdit={editActivity}
+          onClose={closeActivityModal}
+          activity={activity}
+        />
       )}
     </Screen>
   );

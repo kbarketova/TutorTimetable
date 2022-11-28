@@ -1,4 +1,4 @@
-import {TimetableColorsList} from './constants';
+import {TimetableColorsList} from '../constants';
 
 export const getRandomColor = (): string => {
   const maxVal = TimetableColorsList.length;

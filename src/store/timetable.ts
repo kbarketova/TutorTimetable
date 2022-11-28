@@ -8,23 +8,43 @@ class Timetable {
     makeObservable(this, {
       activities: observable,
       addActivity: action,
+      editActivity: action,
       removeActivity: action,
+      getActivity: action,
       markedDates: computed,
     });
   }
 
   addActivity(activity: IActivity) {
-    const list = [activity, ...(this.activities[activity.date] || [])];
+    const list = [...(this.activities[activity.date] || []), activity];
 
     this.activities[activity.date] = uniqWith(function (a, b) {
       return a.activityId === b.activityId;
     }, list);
   }
 
-  removeActivity(date: string, activityId: string) {
+  editActivity(activity: IActivity) {
+    const {date, activityId} = activity;
+    const acts = this.activities[date] || [];
+    const itemAt = acts.findIndex(x => x.activityId === activityId);
+
+    this.activities[date] = [
+      ...acts.slice(0, itemAt),
+      activity,
+      ...acts.slice(itemAt + 1),
+    ];
+  }
+
+  removeActivity(activityId: string) {
+    const date = activityId.split('|')[0];
     this.activities[date] = this.activities[date].filter(
       x => x.activityId !== activityId,
     );
+  }
+
+  getActivity(activityId: string) {
+    const date = activityId.split('|')[0];
+    return this.activities[date].find(x => x.activityId === activityId);
   }
 
   get markedDates() {

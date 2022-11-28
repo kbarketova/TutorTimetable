@@ -4,17 +4,21 @@ import {Button} from '../Button';
 import {Flex} from '../Flex';
 
 type TProps = Readonly<{
-  onPress: () => void;
+  onConfirm: () => void;
   onCancel: () => void;
-  label?: string | null;
+  confirmLabel?: string | null;
+  isConfirmDisabled?: boolean | null;
   cancelLabel?: string | null;
+  isCancelDisabled?: boolean | null;
 }>;
 
 const ModalButtons_: React.FC<TProps> = ({
-  onPress,
+  onConfirm,
   onCancel,
-  label = null,
+  confirmLabel = null,
+  isConfirmDisabled = null,
   cancelLabel = null,
+  isCancelDisabled = null,
 }: TProps) => {
   return (
     <Flex flexDirection="row" alignItems="flex-end" flex={0}>
@@ -22,15 +26,17 @@ const ModalButtons_: React.FC<TProps> = ({
         color={Colors.skyDark}
         borderRadius={25}
         margin="0 10"
-        label={cancelLabel ?? 'Отменить'}
+        label={cancelLabel ?? 'Отмена'}
         onPress={onCancel}
+        isActive={!isCancelDisabled}
       />
       <Button
         color={Colors.sky}
         borderRadius={25}
         margin="0 10"
-        label={label ?? 'Сохранить'}
-        onPress={onPress}
+        label={confirmLabel ?? 'Сохранить'}
+        onPress={onConfirm}
+        isActive={!isConfirmDisabled}
       />
     </Flex>
   );

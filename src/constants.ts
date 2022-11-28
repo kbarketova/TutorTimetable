@@ -1,7 +1,7 @@
 export const Colors = {
   sky: 'deepskyblue',
   skyDark: 'steelblue',
-  grayLight: 'gainsboro',
+  grayLight: '#b3b1b5',
   grayDark: '#767577',
   grayGhost: '#f4f3f4',
   seaGreen: 'darkseagreen',

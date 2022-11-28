@@ -13,10 +13,12 @@ import {ModalButtons} from '../ModalButtons';
 
 type TProps = Readonly<{
   children: React.ReactNode;
-  onPress: () => void;
+  onConfirm: () => void;
   onClose: () => void;
-  label?: string | null;
+  confirmLabel?: string | null;
+  isConfirmDisabled?: boolean | null;
   cancelLabel?: string | null;
+  isCancelDisabled?: boolean | null;
 }>;
 
 const mainStyle: ViewStyle = {
@@ -44,10 +46,12 @@ const decoratorLineStyle: ViewStyle = {
 
 const Modal_: React.FC<TProps> = ({
   children,
-  onPress,
+  onConfirm,
   onClose,
-  label = null,
+  confirmLabel = null,
+  isConfirmDisabled = null,
   cancelLabel = null,
+  isCancelDisabled = null,
 }: TProps) => {
   const {height} = useWindowDimensions();
   const translateY = useSharedValue(height);
@@ -92,10 +96,12 @@ const Modal_: React.FC<TProps> = ({
         <View style={decoratorLineStyle} />
         <Flex>{children}</Flex>
         <ModalButtons
-          label={label}
+          confirmLabel={confirmLabel}
           cancelLabel={cancelLabel}
-          onPress={onPress}
+          onConfirm={onConfirm}
           onCancel={onClose}
+          isConfirmDisabled={isConfirmDisabled}
+          isCancelDisabled={isCancelDisabled}
         />
       </Animated.View>
     </GestureDetector>

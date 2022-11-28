@@ -9,13 +9,18 @@ import {Flex} from '../../components/Flex';
 import {Txt} from '../../components/Txt';
 
 type TProps = Readonly<{
+  isEditable: boolean;
   time: string;
   onChangeTime: (value: string) => void;
 }>;
 
 type TOnChangeTime = (date: Date) => void;
 
-const TimePicker_: React.FC<TProps> = ({time, onChangeTime}: TProps) => {
+const TimePicker_: React.FC<TProps> = ({
+  isEditable,
+  time,
+  onChangeTime,
+}: TProps) => {
   const [isDatePickerOpen, openDatePicker, closeDatePicker] = useFlag();
 
   const dateTime = React.useMemo<Date>(() => {
@@ -41,12 +46,18 @@ const TimePicker_: React.FC<TProps> = ({time, onChangeTime}: TProps) => {
       <Txt padding="10 0">Время</Txt>
       <Flex flexDirection="row" alignItems="center" flex={0}>
         <Button
+          isActive={isEditable}
           onPress={openDatePicker}
           iconName="clock"
           flex={0}
           margin="0 10 0 0"
         />
-        <Input value={time} onChangeText={onChangeTime} size="sm" />
+        <Input
+          value={time}
+          onChangeText={onChangeTime}
+          size="sm"
+          isEditable={isEditable}
+        />
       </Flex>
       {isDatePickerOpen && (
         <DatePicker
