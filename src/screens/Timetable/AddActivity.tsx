@@ -4,13 +4,15 @@ import {Field} from '../../components/Field';
 import {InfoRow} from '../../components/InfoRow';
 import {Modal} from '../../components/Modal';
 import {Switcher} from '../../components/Switcher';
-import {Txt} from '../../components/Txt';
 import {useFlag} from '../../hooks/use-flag';
 import {TimePicker} from './TimePicker';
 import {TOnAddActivity, TOnEditActivity} from './types';
 import students from '../../store/students';
-import {Colors} from '../../constants';
 import {IActivity} from '../../types';
+import {Button} from '../../components/Button';
+import {Colors} from '../../constants';
+import {Flex} from '../../components/Flex';
+import {Input} from '../../components/Input';
 
 type TProps = Readonly<{
   onAdd: TOnAddActivity;
@@ -30,7 +32,8 @@ const AddActivity_: React.FC<TProps> = ({
   activity = null,
 }: TProps) => {
   const [isSaveEnabled, , , toggleSave] = useFlag();
-  const isEdit: boolean = !!activity?.activityId;
+  const [isNewStudent, setIsNewStudent, setIsOldStudent] = useFlag();
+  const isOldActivity: boolean = !!activity?.activityId;
 
   const [theme, setTheme] = React.useState<string>(activity?.theme ?? '');
   const [name, setName] = React.useState<string>(activity?.student.name ?? '');
@@ -92,18 +95,41 @@ const AddActivity_: React.FC<TProps> = ({
 
   return (
     <Modal
-      onConfirm={isEdit ? editActivity : addActivity}
+      onConfirm={isOldActivity ? editActivity : addActivity}
       onClose={onClose}
-      isConfirmDisabled={isSaveDisabled}>
-      <Txt
-        size="lg"
-        alignSelf="center"
-        fontWeight="bold"
-        color={Colors.grayDark}>
-        Занятие
-      </Txt>
+      isConfirmDisabled={isSaveDisabled}
+      header="Занятие">
+      <Flex flexDirection="row" flex={0} margin="10 0">
+        <Button
+          onPress={setIsOldStudent}
+          label="Выбрать ученика"
+          labelColor={!isNewStudent ? Colors.sky : Colors.grayDark}
+        />
+        <Button
+          onPress={setIsNewStudent}
+          label="Новый ученик"
+          labelColor={isNewStudent ? Colors.sky : Colors.grayDark}
+        />
+      </Flex>
+      <Input
+        onChangeText={setTheme}
+        value={theme}
+        placeholder="Тема занятия"
+        backgroundColor="gainsboro"
+        borderRadius={10}
+        padding="0 10"
+        margin="10 0"
+      />
+      <Input
+        onChangeText={setAddress}
+        value={address}
+        placeholder="Адрес"
+        backgroundColor="gainsboro"
+        borderRadius={10}
+        padding="0 10"
+      />
       <InfoRow
-        isEditable={!isEdit}
+        isEditable={!isOldActivity && isNewStudent}
         label="Имя"
         value={name}
         onChangeText={setName}
@@ -120,7 +146,7 @@ const AddActivity_: React.FC<TProps> = ({
       />
       <TimePicker isEditable time={time} onChangeTime={setTime} />
       <Field label="Адрес" value={address} onChangeText={setAddress} flex={0} />
-      {!isEdit && (
+      {!isOldActivity && isNewStudent && (
         <Switcher
           isEnabled={isSaveEnabled}
           onToggle={toggleSave}

@@ -13,13 +13,16 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
+import {Colors} from '../../constants';
 import {Flex} from '../Flex';
 import {ModalButtons} from '../ModalButtons';
+import {Txt} from '../Txt';
 
 type TProps = Readonly<{
   children: React.ReactNode;
   onConfirm: () => void;
   onClose: () => void;
+  header?: string | null;
   confirmLabel?: string | null;
   isConfirmDisabled?: boolean | null;
   cancelLabel?: string | null;
@@ -63,6 +66,7 @@ const Modal_: React.FC<TProps> = ({
   children,
   onConfirm,
   onClose,
+  header = null,
   confirmLabel = null,
   isConfirmDisabled = null,
   cancelLabel = null,
@@ -84,6 +88,9 @@ const Modal_: React.FC<TProps> = ({
     })
     .onUpdate(event => {
       const deltaY = context.value.y + event.translationY;
+      if (deltaY < 0) {
+        return;
+      }
       translateY.value = deltaY;
     })
     .onEnd(() => {
@@ -112,6 +119,15 @@ const Modal_: React.FC<TProps> = ({
         <Animated.View style={[mainStyle, animatedStyle]}>
           <View style={decoratorLineStyle} />
           <Flex>
+            {!!header && (
+              <Txt
+                size="lg"
+                alignSelf="center"
+                fontWeight="bold"
+                color={Colors.grayDark}>
+                {header}
+              </Txt>
+            )}
             {children}
             <ModalButtons
               confirmLabel={confirmLabel}

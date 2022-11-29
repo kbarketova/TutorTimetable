@@ -1,7 +1,8 @@
 export const Colors = {
   sky: 'deepskyblue',
   skyDark: 'steelblue',
-  grayLight: '#b3b1b5',
+  // grayLight: '#b3b1b5',
+  grayLight: 'gainsboro',
   grayDark: '#767577',
   grayGhost: '#f4f3f4',
   seaGreen: 'darkseagreen',
@@ -24,7 +25,7 @@ export const TimetableColorsList: ReadonlyArray<string> = [
 export const BlueThemeInput = {
   backgroundColor: 'white',
   borderColorDisabled: Colors.grayLight,
-  borderColorEnabled: Colors.grayDark,
+  borderColorEnabled: Colors.grayLight,
   textColorDisabled: Colors.grayLight,
   textColorEnabled: '#000000',
   focused: Colors.sky,

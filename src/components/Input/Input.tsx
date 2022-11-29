@@ -21,6 +21,10 @@ type TProps = Readonly<{
   padding?: number | string | null;
   multiline?: boolean | null;
   size?: TInputSize | null;
+  placeholder?: string | null;
+  placeholderTextColor?: string | null;
+  backgroundColor?: string | null;
+  borderRadius?: number | null;
 }>;
 
 const inputSizes: Readonly<Record<TInputSize, TInputSizeParams>> = {
@@ -32,7 +36,7 @@ const inputSizes: Readonly<Record<TInputSize, TInputSizeParams>> = {
 
 const activeStyle: TextStyle = {
   height: 40,
-  borderWidth: 2,
+  borderWidth: 1,
   borderRadius: 3,
   borderColor: BlueThemeInput.borderColorEnabled,
   color: BlueThemeInput.textColorEnabled,
@@ -52,6 +56,10 @@ const Input_: React.FC<TProps> = ({
   padding = null,
   multiline = null,
   size = null,
+  placeholder = null,
+  placeholderTextColor = null,
+  backgroundColor = null,
+  borderRadius = null,
 }: TProps) => {
   const [isFocused, setFocused, setUnfocused] = useFlag();
   const isAndroid: boolean = Platform.OS === 'android';
@@ -67,6 +75,7 @@ const Input_: React.FC<TProps> = ({
     return {
       ...mainStyle,
       ...inputSizes[sizeFinal],
+      borderRadius: borderRadius ?? mainStyle.borderRadius,
       borderColor:
         isFocused && isEditable
           ? BlueThemeInput.focused
@@ -86,8 +95,18 @@ const Input_: React.FC<TProps> = ({
       paddingBottom: paddingFinal.bottom,
       paddingVertical: paddingFinal.vertical,
       paddingHorizontal: paddingFinal.horizontal,
+      backgroundColor: backgroundColor ?? undefined,
     };
-  }, [isEditable, isFocused, margin, multiline, padding, size]);
+  }, [
+    backgroundColor,
+    borderRadius,
+    isEditable,
+    isFocused,
+    margin,
+    multiline,
+    padding,
+    size,
+  ]);
 
   const focus = React.useCallback(() => setFocused(), [setFocused]);
 
@@ -104,6 +123,8 @@ const Input_: React.FC<TProps> = ({
       numberOfLines={numberOfLinesFinal}
       onFocus={focus}
       onBlur={blur}
+      placeholder={placeholder ?? undefined}
+      placeholderTextColor={placeholderTextColor ?? undefined}
     />
   );
 };

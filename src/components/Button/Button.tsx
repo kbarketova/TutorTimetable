@@ -37,6 +37,7 @@ type TProps = Readonly<{
   iconName?: string | null;
   children?: React.ReactNode | null;
   isActive?: boolean | null;
+  labelColor?: string | null;
 }>;
 
 const buttonHeightSizes: Readonly<Record<TButtonSizes, number | undefined>> = {
@@ -71,6 +72,7 @@ const Button_: React.FC<TProps> = ({
   size = null,
   iconName = null,
   isActive = true,
+  labelColor = null,
 }: TProps) => {
   const activeOpacityFinal = activeOpacity ?? innerActiveOpacity;
 
@@ -155,7 +157,7 @@ const Button_: React.FC<TProps> = ({
         />
       )}
       {!!label && (
-        <Txt size="md" color="white">
+        <Txt size="md" color={labelColor ?? 'white'}>
           {label}
         </Txt>
       )}
