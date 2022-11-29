@@ -15,6 +15,8 @@ import {splitProp} from '../split-prop';
 import {Txt} from '../Txt';
 import {TSplitResult} from '../types';
 
+type TButtonSizes = TSize | 'none';
+
 type TProps = Readonly<{
   onPress: () => void;
   label?: string | null;
@@ -31,13 +33,14 @@ type TProps = Readonly<{
   borderColor?: string | null;
   borderWidth?: number | null;
   activeOpacity?: number | null;
-  size?: TSize | null;
+  size?: TButtonSizes | null;
   iconName?: string | null;
   children?: React.ReactNode | null;
   isActive?: boolean | null;
 }>;
 
-const buttonHeightSizes: Readonly<Record<TSize, number>> = {
+const buttonHeightSizes: Readonly<Record<TButtonSizes, number | undefined>> = {
+  none: undefined,
   sm: 45,
   md: 50,
   lg: 60,
@@ -99,7 +102,7 @@ const Button_: React.FC<TProps> = ({
       borderRadius: borderRadius ?? undefined,
       borderColor: borderColor ?? undefined,
       borderWidth: borderWidth ?? undefined,
-      height: buttonHeightSizes[size ?? 'md'],
+      height: buttonHeightSizes[size ?? 'none'],
       opacity: isActive ? undefined : 0.6,
     };
   }, [

@@ -43,10 +43,12 @@ const AddActivity_: React.FC<TProps> = ({
   const [time, setTime] = React.useState<string>(activity?.time ?? '');
 
   const isSaveDisabled: boolean =
-    !!activity &&
-    activity.theme === theme &&
-    activity.time === time &&
-    activity.address === address;
+    !time ||
+    !name ||
+    (!!activity &&
+      activity.theme === theme &&
+      activity.time === time &&
+      activity.address === address);
 
   const editActivity = React.useCallback(() => {
     if (!activity) {
@@ -67,6 +69,9 @@ const AddActivity_: React.FC<TProps> = ({
   }, [activity, address, isSaveDisabled, onClose, onEdit, theme, time]);
 
   const addActivity = React.useCallback(() => {
+    if (!time) {
+      return;
+    }
     const id = getRandomId();
     if (!students.isUniqueId(id)) {
       console.log('Id is not unique, please try again');

@@ -98,6 +98,7 @@ const Timetable_: React.FC<{}> = observer(() => {
       <Flex padding={15} color="white">
         <FlatList
           data={sorted}
+          keyExtractor={item => item.activityId}
           renderItem={({item}) => (
             <Activity item={item} onPress={openActivity} />
           )}

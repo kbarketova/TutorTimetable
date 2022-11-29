@@ -70,6 +70,9 @@ const TimePicker_: React.FC<TProps> = ({
           is24hourSource="locale"
           locale="ru"
           androidVariant="nativeAndroid"
+          confirmText="Выбрать"
+          cancelText="Отмена"
+          title={null}
         />
       )}
     </>

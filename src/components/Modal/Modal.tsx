@@ -1,5 +1,10 @@
 import React from 'react';
-import {useWindowDimensions, View, ViewStyle} from 'react-native';
+import {
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import Animated, {
@@ -29,7 +34,7 @@ const mainStyle: ViewStyle = {
   top: 0,
   backgroundColor: 'white',
   borderColor: 'rgba(180,180,180,0.5)',
-  borderWidth: 0.5,
+  borderWidth: 1,
   borderTopLeftRadius: 20,
   borderTopRightRadius: 20,
   padding: 10,
@@ -42,6 +47,16 @@ const decoratorLineStyle: ViewStyle = {
   alignSelf: 'center',
   marginVertical: 15,
   borderRadius: 2,
+};
+
+const overlayStyle: ViewStyle = {
+  position: 'absolute',
+  top: 0,
+  bottom: 0,
+  left: 0,
+  right: 0,
+  backgroundColor: '#080808',
+  opacity: 0.5,
 };
 
 const Modal_: React.FC<TProps> = ({
@@ -91,20 +106,25 @@ const Modal_: React.FC<TProps> = ({
   }, [height, translateY]);
 
   return (
-    <GestureDetector gesture={gestureHandler}>
-      <Animated.View style={[mainStyle, animatedStyle]}>
-        <View style={decoratorLineStyle} />
-        <Flex>{children}</Flex>
-        <ModalButtons
-          confirmLabel={confirmLabel}
-          cancelLabel={cancelLabel}
-          onConfirm={onConfirm}
-          onCancel={onClose}
-          isConfirmDisabled={isConfirmDisabled}
-          isCancelDisabled={isCancelDisabled}
-        />
-      </Animated.View>
-    </GestureDetector>
+    <>
+      <TouchableOpacity style={overlayStyle} onPress={onClose} />
+      <GestureDetector gesture={gestureHandler}>
+        <Animated.View style={[mainStyle, animatedStyle]}>
+          <View style={decoratorLineStyle} />
+          <Flex>
+            {children}
+            <ModalButtons
+              confirmLabel={confirmLabel}
+              cancelLabel={cancelLabel}
+              onConfirm={onConfirm}
+              onCancel={onClose}
+              isConfirmDisabled={isConfirmDisabled}
+              isCancelDisabled={isCancelDisabled}
+            />
+          </Flex>
+        </Animated.View>
+      </GestureDetector>
+    </>
   );
 };
 
