@@ -38,6 +38,9 @@ type TProps = Readonly<{
   children?: React.ReactNode | null;
   isActive?: boolean | null;
   labelColor?: string | null;
+  labelSize?: TSize | null;
+  borderBottomWidth?: number | null;
+  borderBottomColor?: string | null;
 }>;
 
 const buttonHeightSizes: Readonly<Record<TButtonSizes, number | undefined>> = {
@@ -73,6 +76,9 @@ const Button_: React.FC<TProps> = ({
   iconName = null,
   isActive = true,
   labelColor = null,
+  labelSize = null,
+  borderBottomWidth = null,
+  borderBottomColor = null,
 }: TProps) => {
   const activeOpacityFinal = activeOpacity ?? innerActiveOpacity;
 
@@ -106,6 +112,8 @@ const Button_: React.FC<TProps> = ({
       borderWidth: borderWidth ?? undefined,
       height: buttonHeightSizes[size ?? 'none'],
       opacity: isActive ? undefined : 0.6,
+      borderBottomWidth: borderBottomWidth ?? undefined,
+      borderBottomColor: borderBottomColor ?? undefined,
     };
   }, [
     margin,
@@ -121,6 +129,8 @@ const Button_: React.FC<TProps> = ({
     borderWidth,
     size,
     isActive,
+    borderBottomWidth,
+    borderBottomColor,
   ]);
 
   if (children) {
@@ -149,17 +159,17 @@ const Button_: React.FC<TProps> = ({
       style={style}
       activeOpacity={activeOpacityFinal}
       onPress={isActive ? onPress : undefined}>
+      {!!label && (
+        <Txt size={labelSize ?? 'md'} color={labelColor ?? 'white'}>
+          {label}
+        </Txt>
+      )}
       {!!iconName && (
         <Icon
           name={iconName}
-          size={30}
+          size={15}
           color={isActive ? undefined : Colors.grayLight}
         />
-      )}
-      {!!label && (
-        <Txt size="md" color={labelColor ?? 'white'}>
-          {label}
-        </Txt>
       )}
     </TouchableOpacity>
   );

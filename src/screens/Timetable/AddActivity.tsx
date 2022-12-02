@@ -1,18 +1,23 @@
 import React from 'react';
 
-import {Field} from '../../components/Field';
-import {InfoRow} from '../../components/InfoRow';
+import moment from 'moment';
 import {Modal} from '../../components/Modal';
 import {Switcher} from '../../components/Switcher';
 import {useFlag} from '../../hooks/use-flag';
 import {TimePicker} from './TimePicker';
 import {TOnAddActivity, TOnEditActivity} from './types';
 import students from '../../store/students';
-import {IActivity} from '../../types';
+import {
+  IActivity,
+  IStudentItem,
+  TSelectItem,
+  TSelectItemList,
+} from '../../types';
 import {Button} from '../../components/Button';
 import {Colors} from '../../constants';
 import {Flex} from '../../components/Flex';
 import {Input} from '../../components/Input';
+import {Selector} from '../../components/Selector';
 
 type TProps = Readonly<{
   onAdd: TOnAddActivity;
@@ -25,14 +30,24 @@ const getRandomId = (): number => {
   return Math.floor(Math.random() * 1000);
 };
 
+const createItem = (student: IStudentItem): TSelectItem => ({
+  id: student.id,
+  name: student.name,
+});
+
 const AddActivity_: React.FC<TProps> = ({
   onAdd,
   onEdit,
   onClose,
   activity = null,
 }: TProps) => {
+  const hasStudentsList: boolean = students.list.length > 0;
+  // const hasPicker = hasStudentsList || activity === null;
+
   const [isSaveEnabled, , , toggleSave] = useFlag();
-  const [isNewStudent, setIsNewStudent, setIsOldStudent] = useFlag();
+  const [isNewStudent, setIsNewStudent, setIsOldStudent] = useFlag(
+    !hasStudentsList,
+  );
   const isOldActivity: boolean = !!activity?.activityId;
 
   const [theme, setTheme] = React.useState<string>(activity?.theme ?? '');
@@ -43,8 +58,11 @@ const AddActivity_: React.FC<TProps> = ({
   const [address, setAddress] = React.useState<string>(
     activity?.student.address ?? '',
   );
-  const [time, setTime] = React.useState<string>(activity?.time ?? '');
+  const [time, setTime] = React.useState<string>(
+    activity?.time ?? moment().format('hh:mm'),
+  );
 
+  const [selectedId, setSelectedId] = React.useState<number>(0);
   const isSaveDisabled: boolean =
     !time ||
     !name ||
@@ -52,6 +70,17 @@ const AddActivity_: React.FC<TProps> = ({
       activity.theme === theme &&
       activity.time === time &&
       activity.address === address);
+
+  const setStudent = React.useCallback<(id: number) => void>(id => {
+    const student = students.list.find(x => x.id === id);
+
+    if (!student) {
+      return;
+    }
+    setSelectedId(id);
+    setName(student.name);
+    setPhone(student.phone ?? '');
+  }, []);
 
   const editActivity = React.useCallback(() => {
     if (!activity) {
@@ -93,33 +122,63 @@ const AddActivity_: React.FC<TProps> = ({
     onClose();
   }, [address, name, onAdd, onClose, phone, theme, time]);
 
+  const selectList = React.useMemo<TSelectItemList>(
+    () => students.list.map(createItem),
+    [],
+  );
+
   return (
     <Modal
       onConfirm={isOldActivity ? editActivity : addActivity}
       onClose={onClose}
       isConfirmDisabled={isSaveDisabled}
       header="Занятие">
-      <Flex flexDirection="row" flex={0} margin="10 0">
-        <Button
-          onPress={setIsOldStudent}
-          label="Выбрать ученика"
-          labelColor={!isNewStudent ? Colors.sky : Colors.grayDark}
+      {hasStudentsList && !isOldActivity && (
+        <Flex flexDirection="row" flex={0} margin="10 0">
+          <Button
+            onPress={setIsOldStudent}
+            label="Выбрать ученика"
+            labelColor={!isNewStudent ? Colors.sky : Colors.grayDark}
+          />
+          <Button
+            onPress={setIsNewStudent}
+            label="Новый ученик"
+            labelColor={isNewStudent ? Colors.sky : Colors.grayDark}
+          />
+        </Flex>
+      )}
+      {!isOldActivity && isNewStudent ? (
+        <>
+          <Input
+            onChangeText={setName}
+            value={name}
+            placeholder="Имя"
+            backgroundColor="gainsboro"
+            borderRadius={10}
+            padding="0 10"
+            margin="0 0 10 0"
+          />
+          <Input
+            onChangeText={setPhone}
+            value={phone}
+            placeholder="Телефон"
+            backgroundColor="gainsboro"
+            borderRadius={10}
+            padding="0 10"
+            margin="0 0 10 0"
+          />
+        </>
+      ) : (
+        <Selector
+          isReadonly={isOldActivity}
+          label="Ученик"
+          value={name ? `${name} ${phone}` : 'Не выбран'}
+          data={selectList}
+          selectedId={selectedId}
+          onSelect={setStudent}
         />
-        <Button
-          onPress={setIsNewStudent}
-          label="Новый ученик"
-          labelColor={isNewStudent ? Colors.sky : Colors.grayDark}
-        />
-      </Flex>
-      <Input
-        onChangeText={setTheme}
-        value={theme}
-        placeholder="Тема занятия"
-        backgroundColor="gainsboro"
-        borderRadius={10}
-        padding="0 10"
-        margin="10 0"
-      />
+      )}
+      <TimePicker time={time} onChangeTime={setTime} />
       <Input
         onChangeText={setAddress}
         value={address}
@@ -127,25 +186,17 @@ const AddActivity_: React.FC<TProps> = ({
         backgroundColor="gainsboro"
         borderRadius={10}
         padding="0 10"
+        margin="0 0 10 0"
       />
-      <InfoRow
-        isEditable={!isOldActivity && isNewStudent}
-        label="Имя"
-        value={name}
-        onChangeText={setName}
-        labelAdditional="Телефон"
-        valueAdditional={phone}
-        onChangeTextAdditional={setPhone}
-        flex={0}
-      />
-      <Field
-        label="Тема занятия"
-        value={theme}
+      <Input
         onChangeText={setTheme}
-        flex={0}
+        value={theme}
+        placeholder="Тема занятия"
+        backgroundColor="gainsboro"
+        borderRadius={10}
+        padding="0 10"
+        margin="0 0 10 0"
       />
-      <TimePicker isEditable time={time} onChangeTime={setTime} />
-      <Field label="Адрес" value={address} onChangeText={setAddress} flex={0} />
       {!isOldActivity && isNewStudent && (
         <Switcher
           isEnabled={isSaveEnabled}

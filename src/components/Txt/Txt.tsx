@@ -6,7 +6,7 @@ import {splitProp} from '../split-prop';
 import {TSplitResult} from '../types';
 
 const textSizes: Readonly<Record<TSize, number>> = {
-  sm: 12,
+  sm: 14,
   md: 16,
   lg: 25,
 };

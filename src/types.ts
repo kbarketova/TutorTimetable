@@ -66,8 +66,6 @@ export interface IStudentItem {
   id: number;
   address?: string;
   phone?: string;
-  secondaryPhone?: string;
-  secondaryPhoneOwner?: string;
 }
 
 export interface IActivity {
@@ -85,3 +83,10 @@ export type TActivityList = Array<IActivity>;
 export type TTimetable = Record<string, TActivityList>;
 
 export type IStudentItemList = Array<IStudentItem>;
+
+export type TSelectItem = Readonly<{
+  id: number;
+  name: string;
+}>;
+
+export type TSelectItemList = ReadonlyArray<TSelectItem>;

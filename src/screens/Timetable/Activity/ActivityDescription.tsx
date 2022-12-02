@@ -11,19 +11,14 @@ const ActivityDescription_: React.FC<TProps> = ({
   color,
   theme,
 }: TProps) => {
-  const {name, phone, secondaryPhone, secondaryPhoneOwner} = student;
-
+  const {name, phone} = student;
   const header: string = name ?? phone;
-  const headerSecondary: string =
-    secondaryPhone && secondaryPhoneOwner
-      ? `${secondaryPhone} (${secondaryPhoneOwner})`
-      : secondaryPhone ?? secondaryPhoneOwner ?? '';
 
   return (
     <Flex flex={3} color={color} padding={10} borderRadius={3}>
-      {(header || headerSecondary) && (
+      {!!header && (
         <Txt color="white" size="md">
-          {header || headerSecondary}
+          {header}
         </Txt>
       )}
       {!!theme && (
