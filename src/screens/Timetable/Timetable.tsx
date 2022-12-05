@@ -14,7 +14,7 @@ import {getSortedByTime} from './get-sorted-by-time';
 import {IActivity, TActivityList} from '../../types';
 import {useFlag} from '../../hooks/use-flag';
 import {AddActivity} from './AddActivity';
-import {TOnAddActivity, TOnEditActivity, TOnOpenActivity} from './types';
+import {TOnAddActivity, TOnEditActivity, TOnManageActivity} from './types';
 import {getRandomColor} from '../../utils/get-random-color';
 
 const style: ViewStyle = {
@@ -73,7 +73,7 @@ const Timetable_: React.FC<{}> = observer(() => {
     [date],
   );
 
-  const openActivity = React.useCallback<TOnOpenActivity>(
+  const openActivity = React.useCallback<TOnManageActivity>(
     id => {
       const actv = timetable.getActivity(id);
       if (!actv) {
@@ -85,6 +85,10 @@ const Timetable_: React.FC<{}> = observer(() => {
     },
     [openAdd],
   );
+
+  const removeActivity = React.useCallback<TOnManageActivity>(id => {
+    timetable.removeActivity(id);
+  }, []);
 
   return (
     <Screen padding={0}>
@@ -100,7 +104,11 @@ const Timetable_: React.FC<{}> = observer(() => {
           data={sorted}
           keyExtractor={item => item.activityId}
           renderItem={({item}) => (
-            <Activity item={item} onPress={openActivity} />
+            <Activity
+              item={item}
+              onEdit={openActivity}
+              onRemove={removeActivity}
+            />
           )}
         />
       </Flex>

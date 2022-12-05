@@ -41,6 +41,7 @@ type TProps = Readonly<{
   labelSize?: TSize | null;
   borderBottomWidth?: number | null;
   borderBottomColor?: string | null;
+  iconColor?: string | null;
 }>;
 
 const buttonHeightSizes: Readonly<Record<TButtonSizes, number | undefined>> = {
@@ -79,8 +80,10 @@ const Button_: React.FC<TProps> = ({
   labelSize = null,
   borderBottomWidth = null,
   borderBottomColor = null,
+  iconColor = null,
 }: TProps) => {
   const activeOpacityFinal = activeOpacity ?? innerActiveOpacity;
+  const activeIconColor = iconColor ?? undefined;
 
   const style = React.useMemo<ViewStyle>(() => {
     const marginFinal: TSplitResult = margin ? splitProp(margin) : {};
@@ -168,7 +171,7 @@ const Button_: React.FC<TProps> = ({
         <Icon
           name={iconName}
           size={15}
-          color={isActive ? undefined : Colors.grayLight}
+          color={isActive ? activeIconColor : Colors.grayLight}
         />
       )}
     </TouchableOpacity>

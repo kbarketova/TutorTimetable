@@ -9,6 +9,6 @@ type TActivity = Readonly<{
 
 export type TOnAddActivity = (data: TActivity) => void;
 
-export type TOnOpenActivity = (id: string) => void;
+export type TOnManageActivity = (id: string) => void;
 
 export type TOnEditActivity = (activity: IActivity) => void;

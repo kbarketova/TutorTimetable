@@ -13,7 +13,7 @@ const textSizes: Readonly<Record<TSize, number>> = {
 
 type TProps = TPropsTxt &
   Readonly<{
-    children: string;
+    children: React.ReactNode;
   }>;
 
 const innerLabelStyle: TextStyle = {
