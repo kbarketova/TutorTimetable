@@ -6,15 +6,19 @@ import {ModalInput} from '../../components/ModalInput';
 import {Screen} from '../../components/Screen';
 import {Flex} from '../../components/Flex';
 import {Colors} from '../../constants';
+import {RootStackParamList} from '../../types';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+
+type TNavProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const Login_: React.FC = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<TNavProps['navigation']>();
 
   const [login, setLogin] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
 
   const onLogin = React.useCallback(
-    () => navigation.navigate('Timetable', {}),
+    () => navigation.navigate('Timetable'),
     [navigation],
   );
 

@@ -1,7 +1,10 @@
 import React from 'react';
 import {SafeAreaView, StatusBar, ViewStyle} from 'react-native';
 
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import {
+  createDrawerNavigator,
+  DrawerHeaderProps,
+} from '@react-navigation/drawer';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Timetable} from './src/screens/Timetable';
 import {StudentDetails} from './src/screens/StudentDetails';
@@ -9,6 +12,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import {Colors} from './src/constants';
 import {Login} from './src/screens/Login';
+import {RootStackParamList} from './src/types';
 
 const containerStyle: ViewStyle = {
   flex: 1,
@@ -28,7 +32,7 @@ const headerStyle: ViewStyle = {
   elevation: 5,
 };
 
-const header = ({navigation}): React.ReactNode => {
+const header = ({navigation}: DrawerHeaderProps): React.ReactNode => {
   return (
     <Icon
       name="menu"
@@ -40,14 +44,14 @@ const header = ({navigation}): React.ReactNode => {
 };
 
 const App = () => {
-  const Drawer = createDrawerNavigator();
+  const Drawer = createDrawerNavigator<RootStackParamList>();
   return (
     <GestureHandlerRootView style={containerStyle}>
       <SafeAreaView style={containerStyle}>
         <StatusBar barStyle={'light-content'} />
         <NavigationContainer>
           <Drawer.Navigator
-            initialRouteName="App"
+            initialRouteName="Login"
             screenOptions={{
               header,
               drawerActiveBackgroundColor: Colors.sky,

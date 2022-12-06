@@ -90,3 +90,9 @@ export type TSelectItem = Readonly<{
 }>;
 
 export type TSelectItemList = ReadonlyArray<TSelectItem>;
+
+export type RootStackParamList = {
+  Timetable: undefined;
+  StudentDetails: undefined;
+  Login: undefined;
+};
