@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, TouchableOpacity, ViewStyle} from 'react-native';
+import {FlatList, ViewStyle} from 'react-native';
 
 import {observer} from 'mobx-react';
 import {Calendar} from 'react-native-calendars';
@@ -9,29 +9,17 @@ import timetable from '../../store/timetable';
 import moment from 'moment';
 import {Activity} from './Activity';
 import {Flex} from '../../components/Flex';
-import {Txt} from '../../components/Txt';
 import {getSortedByTime} from './get-sorted-by-time';
 import {IActivity, TActivityList} from '../../types';
 import {useFlag} from '../../hooks/use-flag';
 import {AddActivity} from './AddActivity';
 import {TOnAddActivity, TOnEditActivity, TOnManageActivity} from './types';
 import {getRandomColor} from '../../utils/get-random-color';
+import {ButtonAdd} from './ButtonAdd';
 
 const style: ViewStyle = {
   borderBottomWidth: 2,
   borderBottomColor: 'rgba(180,180,180,0.4)',
-};
-
-const buttonStyle: ViewStyle = {
-  position: 'absolute',
-  backgroundColor: 'deepskyblue',
-  width: 50,
-  height: 50,
-  borderRadius: 50 / 2,
-  bottom: 50,
-  right: 20,
-  alignItems: 'center',
-  justifyContent: 'center',
 };
 
 type TPressDate = (day: DateData) => void;
@@ -112,14 +100,7 @@ const Timetable_: React.FC<{}> = observer(() => {
           )}
         />
       </Flex>
-      <TouchableOpacity
-        style={buttonStyle}
-        activeOpacity={0.6}
-        onPress={openAdd}>
-        <Txt color="white" size="lg">
-          +
-        </Txt>
-      </TouchableOpacity>
+      <ButtonAdd onPress={openAdd} />
       {isAddVisible && (
         <AddActivity
           onAdd={addActivityForDate}
