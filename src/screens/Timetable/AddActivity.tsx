@@ -16,8 +16,8 @@ import {
 import {Button} from '../../components/Button';
 import {Colors} from '../../constants';
 import {Flex} from '../../components/Flex';
-import {Input} from '../../components/Input';
 import {Selector} from '../../components/Selector';
+import {ModalInput} from '../../components/ModalInput';
 
 type TProps = Readonly<{
   onAdd: TOnAddActivity;
@@ -42,7 +42,6 @@ const AddActivity_: React.FC<TProps> = ({
   activity = null,
 }: TProps) => {
   const hasStudentsList: boolean = students.list.length > 0;
-  // const hasPicker = hasStudentsList || activity === null;
 
   const [isSaveEnabled, , , toggleSave] = useFlag();
   const [isNewStudent, setIsNewStudent, setIsOldStudent] = useFlag(
@@ -149,23 +148,11 @@ const AddActivity_: React.FC<TProps> = ({
       )}
       {!isOldActivity && isNewStudent ? (
         <>
-          <Input
-            onChangeText={setName}
-            value={name}
-            placeholder="Имя"
-            backgroundColor="gainsboro"
-            borderRadius={10}
-            padding="0 10"
-            margin="0 0 10 0"
-          />
-          <Input
+          <ModalInput onChangeText={setName} value={name} placeholder="Имя" />
+          <ModalInput
             onChangeText={setPhone}
             value={phone}
             placeholder="Телефон"
-            backgroundColor="gainsboro"
-            borderRadius={10}
-            padding="0 10"
-            margin="0 0 10 0"
           />
         </>
       ) : (
@@ -179,23 +166,15 @@ const AddActivity_: React.FC<TProps> = ({
         />
       )}
       <TimePicker time={time} onChangeTime={setTime} />
-      <Input
+      <ModalInput
         onChangeText={setAddress}
         value={address}
         placeholder="Адрес"
-        backgroundColor="gainsboro"
-        borderRadius={10}
-        padding="0 10"
-        margin="0 0 10 0"
       />
-      <Input
+      <ModalInput
         onChangeText={setTheme}
         value={theme}
         placeholder="Тема занятия"
-        backgroundColor="gainsboro"
-        borderRadius={10}
-        padding="0 10"
-        margin="0 0 10 0"
       />
       {!isOldActivity && isNewStudent && (
         <Switcher

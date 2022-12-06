@@ -8,6 +8,7 @@ import {StudentDetails} from './src/screens/StudentDetails';
 import {NavigationContainer} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import {Colors} from './src/constants';
+import {Login} from './src/screens/Login';
 
 const containerStyle: ViewStyle = {
   flex: 1,
@@ -62,6 +63,14 @@ const App = () => {
               name="StudentDetails"
               component={StudentDetails}
               options={{title: 'Добавить ученика'}}
+            />
+            <Drawer.Screen
+              name="Login"
+              component={Login}
+              options={{
+                title: 'Выйти',
+                headerShown: false,
+              }}
             />
           </Drawer.Navigator>
         </NavigationContainer>
