@@ -1,4 +1,5 @@
 import React from 'react';
+import {ViewStyle} from 'react-native';
 
 import {Button} from '../../components/Button';
 import {useNavigation} from '@react-navigation/native';
@@ -8,12 +9,22 @@ import {Flex} from '../../components/Flex';
 import {Colors} from '../../constants';
 import {RootStackParamList} from '../../types';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import Icon from 'react-native-vector-icons/Feather';
+import {useFlag} from '../../hooks/use-flag';
+
+const style: ViewStyle = {
+  alignItems: 'center',
+  alignSelf: 'center',
+  marginBottom: 10,
+  paddingHorizontal: 10,
+};
 
 type TNavProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const Login_: React.FC = () => {
   const navigation = useNavigation<TNavProps['navigation']>();
 
+  const [isPasswordVisible, , , togglePassword] = useFlag();
   const [login, setLogin] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
 
@@ -26,11 +37,21 @@ const Login_: React.FC = () => {
     <Screen padding={0} color="blue">
       <Flex alignContent="center" justifyContent="center" padding="0 15">
         <ModalInput onChangeText={setLogin} value={login} placeholder="Логин" />
-        <ModalInput
-          onChangeText={setPassword}
-          value={password}
-          placeholder="Пароль"
-        />
+        <Flex flex={0} flexDirection="row">
+          <ModalInput
+            onChangeText={setPassword}
+            value={password}
+            placeholder="Пароль"
+            flex={1}
+            secureTextEntry={!isPasswordVisible}
+          />
+          <Icon
+            name={isPasswordVisible ? 'eye' : 'eye-off'}
+            size={15}
+            onPress={togglePassword}
+            style={style}
+          />
+        </Flex>
         <Button
           color={Colors.sky}
           borderRadius={25}

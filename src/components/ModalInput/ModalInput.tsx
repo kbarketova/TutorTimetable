@@ -6,12 +6,16 @@ type TProps = Readonly<{
   placeholder: string;
   value: string;
   onChangeText: (value: string) => void;
+  secureTextEntry?: boolean | null;
+  flex?: number | null;
 }>;
 
 const ModalInput_: React.FC<TProps> = ({
   placeholder,
   value,
   onChangeText,
+  secureTextEntry = null,
+  flex = null,
 }: TProps) => {
   return (
     <Input
@@ -22,6 +26,8 @@ const ModalInput_: React.FC<TProps> = ({
       borderRadius={10}
       padding="0 10"
       margin="0 0 10 0"
+      secureTextEntry={secureTextEntry}
+      flex={flex}
     />
   );
 };

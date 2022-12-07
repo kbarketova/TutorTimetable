@@ -25,6 +25,8 @@ type TProps = Readonly<{
   placeholderTextColor?: string | null;
   backgroundColor?: string | null;
   borderRadius?: number | null;
+  secureTextEntry?: boolean | null;
+  flex?: number | null;
 }>;
 
 const inputSizes: Readonly<Record<TInputSize, TInputSizeParams>> = {
@@ -60,6 +62,8 @@ const Input_: React.FC<TProps> = ({
   placeholderTextColor = null,
   backgroundColor = null,
   borderRadius = null,
+  secureTextEntry = null,
+  flex = null,
 }: TProps) => {
   const [isFocused, setFocused, setUnfocused] = useFlag();
   const isAndroid: boolean = Platform.OS === 'android';
@@ -96,6 +100,7 @@ const Input_: React.FC<TProps> = ({
       paddingVertical: paddingFinal.vertical,
       paddingHorizontal: paddingFinal.horizontal,
       backgroundColor: backgroundColor ?? undefined,
+      flex: flex ?? undefined,
     };
   }, [
     backgroundColor,
@@ -106,6 +111,7 @@ const Input_: React.FC<TProps> = ({
     multiline,
     padding,
     size,
+    flex,
   ]);
 
   const focus = React.useCallback(() => setFocused(), [setFocused]);
@@ -125,6 +131,7 @@ const Input_: React.FC<TProps> = ({
       onBlur={blur}
       placeholder={placeholder ?? undefined}
       placeholderTextColor={placeholderTextColor ?? undefined}
+      secureTextEntry={secureTextEntry ?? undefined}
     />
   );
 };
