@@ -1,5 +1,6 @@
 import React from 'react';
 
+import {TKeyboard} from '../../types';
 import {Input} from '../Input';
 
 type TProps = Readonly<{
@@ -8,6 +9,8 @@ type TProps = Readonly<{
   onChangeText: (value: string) => void;
   secureTextEntry?: boolean | null;
   flex?: number | null;
+  margin?: number | string | null;
+  keyboardType?: TKeyboard | null;
 }>;
 
 const ModalInput_: React.FC<TProps> = ({
@@ -16,6 +19,8 @@ const ModalInput_: React.FC<TProps> = ({
   onChangeText,
   secureTextEntry = null,
   flex = null,
+  margin = null,
+  keyboardType = null,
 }: TProps) => {
   return (
     <Input
@@ -25,9 +30,10 @@ const ModalInput_: React.FC<TProps> = ({
       backgroundColor="gainsboro"
       borderRadius={10}
       padding="0 10"
-      margin="0 0 10 0"
+      margin={margin ?? '0 0 10 0'}
       secureTextEntry={secureTextEntry}
       flex={flex}
+      keyboardType={keyboardType}
     />
   );
 };

@@ -1,13 +1,13 @@
 import React from 'react';
-import {Text, TextStyle} from 'react-native';
 
-import {Field} from '../../components/Field';
 import {Flex} from '../../components/Flex';
 import {InfoRow} from '../../components/InfoRow';
+import {ModalInput} from '../../components/ModalInput';
+import {Txt} from '../../components/Txt';
+import {Colors} from '../../constants';
 
 type TProps = Readonly<{
-  isEditable: boolean;
-  label: string;
+  header: string;
   name: string;
   onChangeName: (value: string) => void;
   phone: string;
@@ -17,15 +17,8 @@ type TProps = Readonly<{
   padding?: number | string | null;
 }>;
 
-const labelStyle: TextStyle = {
-  fontWeight: 'bold',
-  fontSize: 20,
-  color: 'green',
-};
-
 const Contacts_: React.FC<TProps> = ({
-  isEditable,
-  label,
+  header,
   name,
   onChangeName,
   phone,
@@ -36,24 +29,28 @@ const Contacts_: React.FC<TProps> = ({
 }: TProps) => {
   return (
     <Flex padding={padding}>
-      <Text style={labelStyle}>{label}</Text>
+      <Txt
+        padding="5 0"
+        alignSelf="center"
+        fontWeight="bold"
+        color={Colors.grayDark}>
+        {header}
+      </Txt>
       <InfoRow
-        isEditable={isEditable}
         label="Имя"
         value={name}
         onChangeText={onChangeName}
         labelAdditional="Телефон"
         valueAdditional={phone}
         onChangeTextAdditional={onChangePhone}
+        keyboardTypeAdditional="number-pad"
       />
       {onChangeEmail && typeof email === 'string' && (
-        <Field
-          label="Эл. почта"
-          value={email}
+        <ModalInput
           onChangeText={onChangeEmail}
-          isEditable={isEditable}
-          labelSize={15}
-          labelWeight="400"
+          value={email}
+          placeholder="Эл. почта"
+          keyboardType="email-address"
         />
       )}
     </Flex>

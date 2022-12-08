@@ -3,7 +3,7 @@ import {Platform, TextInput, TextStyle, ViewStyle} from 'react-native';
 
 import {BlueThemeInput} from '../../constants';
 import {useFlag} from '../../hooks/use-flag';
-import {TSize} from '../../types';
+import {TKeyboard, TSize} from '../../types';
 import {splitProp} from '../split-prop';
 import {TSplitResult} from '../types';
 
@@ -27,6 +27,7 @@ type TProps = Readonly<{
   borderRadius?: number | null;
   secureTextEntry?: boolean | null;
   flex?: number | null;
+  keyboardType?: TKeyboard | null;
 }>;
 
 const inputSizes: Readonly<Record<TInputSize, TInputSizeParams>> = {
@@ -64,6 +65,7 @@ const Input_: React.FC<TProps> = ({
   borderRadius = null,
   secureTextEntry = null,
   flex = null,
+  keyboardType = null,
 }: TProps) => {
   const [isFocused, setFocused, setUnfocused] = useFlag();
   const isAndroid: boolean = Platform.OS === 'android';
@@ -132,6 +134,7 @@ const Input_: React.FC<TProps> = ({
       placeholder={placeholder ?? undefined}
       placeholderTextColor={placeholderTextColor ?? undefined}
       secureTextEntry={secureTextEntry ?? undefined}
+      keyboardType={keyboardType ?? undefined}
     />
   );
 };

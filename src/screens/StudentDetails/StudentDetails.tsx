@@ -1,9 +1,14 @@
 import React from 'react';
 
-import {Field} from '../../components/Field';
 import {Screen} from '../../components/Screen';
 import {Contacts} from './Contacts';
 import {InfoRow} from '../../components/InfoRow';
+import {Colors} from '../../constants';
+import {Txt} from '../../components/Txt';
+import students from '../../store/students';
+import {ICommonInfo, IParentInfo, IStudentItem} from '../../types';
+import {getRandomId} from '../../utils/get-random-id';
+import {ModalButtons} from '../../components/ModalButtons';
 
 const StudentDetails_: React.FC<{}> = () => {
   const [studentName, setStudentName] = React.useState<string>('Иван Иванов');
@@ -16,52 +21,99 @@ const StudentDetails_: React.FC<{}> = () => {
   const [grade, setGrade] = React.useState<string>('');
   const [price, setPrice] = React.useState<string>('');
   const [address, setAddress] = React.useState<string>('');
-  const [commentary, setCommentary] = React.useState<string>('');
+  const [summary, setSummary] = React.useState<string>('');
 
-  const isEditMode: boolean = true;
+  const addStudent = React.useCallback(() => {
+    const id = getRandomId();
+    if (!students.isUniqueId(id)) {
+      console.log('Id is not unique, please try again');
+      return;
+    }
+    const parent: IParentInfo | undefined =
+      parentName || parentPhone
+        ? {
+            name: parentName,
+            phone: parentPhone,
+          }
+        : undefined;
+    const commonInfo: ICommonInfo | undefined =
+      price || summary
+        ? {
+            price,
+            summary,
+          }
+        : undefined;
+
+    const student: IStudentItem = {
+      name: studentName,
+      id,
+      address,
+      phone: studentPhone,
+      parent: parent,
+      commonInfo,
+    };
+    students.addStudent(student);
+  }, [
+    address,
+    parentName,
+    parentPhone,
+    price,
+    studentName,
+    studentPhone,
+    summary,
+  ]);
 
   return (
-    <Screen isScrollable>
+    <Screen
+      isScrollable
+      footer={
+        <ModalButtons
+          flex={0}
+          color="white"
+          padding="10"
+          onConfirm={addStudent}
+        />
+      }>
       <Contacts
-        label="Контакты ученика"
+        header="Контакты ученика"
         name={studentName}
         onChangeName={setStudentName}
         phone={studentPhone}
         onChangePhone={setStudentPhone}
         email={studentEmail}
         onChangeEmail={setStudentEmail}
-        isEditable={isEditMode}
       />
       <InfoRow
-        isEditable={isEditMode}
         label="Класс"
         value={grade}
         onChangeText={setGrade}
-        labelAdditional="Цена"
-        valueAdditional={price}
-        onChangeTextAdditional={setPrice}
-      />
-      <Field
-        label="Адрес"
-        value={address}
-        onChangeText={setAddress}
-        isEditable={isEditMode}
+        labelAdditional="Адрес"
+        valueAdditional={address}
+        onChangeTextAdditional={setAddress}
+        flexAdditional={4}
       />
       <Contacts
-        label="Контакты родителя"
+        header="Контакты родителя"
         name={parentName}
         onChangeName={setParentName}
         phone={parentPhone}
         onChangePhone={setParentPhone}
-        isEditable={isEditMode}
-        padding="15 0 0 0"
       />
-      <Field
-        isMultiline
-        label="Комментарий"
-        value={commentary}
-        onChangeText={setCommentary}
-        isEditable={isEditMode}
+      <Txt
+        padding="5 0"
+        alignSelf="center"
+        fontWeight="bold"
+        color={Colors.grayDark}>
+        Общая информация
+      </Txt>
+      <InfoRow
+        label="Цена"
+        value={price}
+        onChangeText={setPrice}
+        labelAdditional="Описание"
+        valueAdditional={summary}
+        onChangeTextAdditional={setSummary}
+        flexAdditional={4}
       />
     </Screen>
   );

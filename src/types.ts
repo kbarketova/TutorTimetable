@@ -1,3 +1,12 @@
+export type TKeyboard =
+  | 'default'
+  | 'number-pad'
+  | 'decimal-pad'
+  | 'numeric'
+  | 'email-address'
+  | 'phone-pad'
+  | 'url';
+
 export type TFlexDirection =
   | 'column'
   | 'row'
@@ -61,11 +70,23 @@ export type TPropsTxt = Readonly<{
   padding?: number | string | null;
 }>;
 
+export interface ICommonInfo {
+  price: string;
+  summary?: string;
+}
+
+export interface IParentInfo {
+  name: string;
+  phone?: string;
+}
+
 export interface IStudentItem {
   name: string;
   id: number;
   address?: string;
   phone?: string;
+  parent?: IParentInfo;
+  commonInfo?: ICommonInfo;
 }
 
 export interface IActivity {
@@ -91,7 +112,7 @@ export type TSelectItem = Readonly<{
 
 export type TSelectItemList = ReadonlyArray<TSelectItem>;
 
-export type RootStackParamList = {
+export type DrawerParamList = {
   Timetable: undefined;
   StudentDetails: undefined;
   Login: undefined;

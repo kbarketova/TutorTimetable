@@ -5,7 +5,7 @@ import {Modal} from '../../components/Modal';
 import {Switcher} from '../../components/Switcher';
 import {useFlag} from '../../hooks/use-flag';
 import {TimePicker} from './TimePicker';
-import {TOnAddActivity, TOnEditActivity} from './types';
+import {TActivity, TOnAddActivity, TOnEditActivity} from './types';
 import students from '../../store/students';
 import {
   IActivity,
@@ -18,6 +18,7 @@ import {Colors} from '../../constants';
 import {Flex} from '../../components/Flex';
 import {Selector} from '../../components/Selector';
 import {ModalInput} from '../../components/ModalInput';
+import {getRandomId} from '../../utils/get-random-id';
 
 type TProps = Readonly<{
   onAdd: TOnAddActivity;
@@ -25,10 +26,6 @@ type TProps = Readonly<{
   onClose: () => void;
   activity?: IActivity | null;
 }>;
-
-const getRandomId = (): number => {
-  return Math.floor(Math.random() * 1000);
-};
 
 const createItem = (student: IStudentItem): TSelectItem => ({
   id: student.id,
@@ -108,7 +105,7 @@ const AddActivity_: React.FC<TProps> = ({
       console.log('Id is not unique, please try again');
       return;
     }
-    onAdd({
+    const data: TActivity = {
       theme,
       time,
       student: {
@@ -117,9 +114,11 @@ const AddActivity_: React.FC<TProps> = ({
         phone,
       },
       address,
-    });
+    };
+
+    onAdd(isSaveEnabled, data);
     onClose();
-  }, [address, name, onAdd, onClose, phone, theme, time]);
+  }, [address, isSaveEnabled, name, onAdd, onClose, phone, theme, time]);
 
   const selectList = React.useMemo<TSelectItemList>(
     () => students.list.map(createItem),
@@ -153,6 +152,7 @@ const AddActivity_: React.FC<TProps> = ({
             onChangeText={setPhone}
             value={phone}
             placeholder="Телефон"
+            keyboardType="number-pad"
           />
         </>
       ) : (

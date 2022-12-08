@@ -1,13 +1,13 @@
 import {IActivity, IStudentItem} from '../../types';
 
-type TActivity = Readonly<{
+export type TActivity = Readonly<{
   theme: string;
   time: string;
   student: IStudentItem;
   address: string;
 }>;
 
-export type TOnAddActivity = (data: TActivity) => void;
+export type TOnAddActivity = (saveStudent: boolean, data: TActivity) => void;
 
 export type TOnManageActivity = (id: string) => void;
 

@@ -16,6 +16,7 @@ import {AddActivity} from './AddActivity';
 import {TOnAddActivity, TOnEditActivity, TOnManageActivity} from './types';
 import {getRandomColor} from '../../utils/get-random-color';
 import {ButtonAdd} from './ButtonAdd';
+import students from '../../store/students';
 
 const style: ViewStyle = {
   borderBottomWidth: 2,
@@ -50,13 +51,19 @@ const Timetable_: React.FC<{}> = observer(() => {
   }, []);
 
   const addActivityForDate = React.useCallback<TOnAddActivity>(
-    data => {
+    (saveStudent, data) => {
       timetable.addActivity({
         ...data,
         activityId: `${date}|${data.student.id}`,
         date,
         color: getRandomColor(),
       });
+
+      if (saveStudent) {
+        students.addStudent({
+          ...data.student,
+        });
+      }
     },
     [date],
   );

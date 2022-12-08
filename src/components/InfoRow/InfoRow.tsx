@@ -1,46 +1,46 @@
 import React from 'react';
 
-import {Field} from '../Field';
+import {TKeyboard} from '../../types';
 import {Flex} from '../Flex';
+import {ModalInput} from '../ModalInput';
 
 type TProps = Readonly<{
-  isEditable: boolean;
   label: string;
   value: string;
   onChangeText: (value: string) => void;
-  labelAdditional?: string | null;
-  valueAdditional?: string | null;
-  onChangeTextAdditional?: ((value: string) => void) | null;
-  flex?: number | null;
+  labelAdditional: string;
+  valueAdditional: string;
+  onChangeTextAdditional: (value: string) => void;
+  flexAdditional?: number | null;
+  keyboardTypeAdditional?: TKeyboard | null;
 }>;
 
 const InfoRow_: React.FC<TProps> = ({
-  isEditable,
   label,
   value,
   onChangeText,
-  labelAdditional = null,
-  valueAdditional = null,
-  onChangeTextAdditional = null,
-  flex = null,
+  labelAdditional,
+  valueAdditional,
+  onChangeTextAdditional,
+  flexAdditional = null,
+  keyboardTypeAdditional = null,
 }: TProps) => {
   return (
-    <Flex flexDirection="row" justifyContent="space-between" flex={flex}>
-      <Field
-        label={label}
-        value={value}
+    <Flex flexDirection="row" justifyContent="space-between">
+      <ModalInput
         onChangeText={onChangeText}
-        isEditable={isEditable}
-        inputMargin="0 15 0 0"
+        value={value}
+        placeholder={label}
+        flex={1}
+        margin="0 10 0 0"
       />
-      {onChangeTextAdditional && typeof valueAdditional === 'string' && (
-        <Field
-          label={labelAdditional}
-          value={valueAdditional}
-          onChangeText={onChangeTextAdditional}
-          isEditable={isEditable}
-        />
-      )}
+      <ModalInput
+        onChangeText={onChangeTextAdditional}
+        value={valueAdditional}
+        placeholder={labelAdditional}
+        flex={flexAdditional ?? 1}
+        keyboardType={keyboardTypeAdditional}
+      />
     </Flex>
   );
 };

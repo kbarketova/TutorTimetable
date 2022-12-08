@@ -7,7 +7,7 @@ import {ModalInput} from '../../components/ModalInput';
 import {Screen} from '../../components/Screen';
 import {Flex} from '../../components/Flex';
 import {Colors} from '../../constants';
-import {RootStackParamList} from '../../types';
+import {DrawerParamList} from '../../types';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/Feather';
 import {useFlag} from '../../hooks/use-flag';
@@ -19,7 +19,7 @@ const style: ViewStyle = {
   paddingHorizontal: 10,
 };
 
-type TNavProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
+type TNavProps = NativeStackScreenProps<DrawerParamList, 'Login'>;
 
 const Login_: React.FC = () => {
   const navigation = useNavigation<TNavProps['navigation']>();

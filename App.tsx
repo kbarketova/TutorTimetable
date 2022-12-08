@@ -12,7 +12,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import {Colors} from './src/constants';
 import {Login} from './src/screens/Login';
-import {RootStackParamList} from './src/types';
+import {DrawerParamList} from './src/types';
 
 const containerStyle: ViewStyle = {
   flex: 1,
@@ -44,7 +44,7 @@ const header = ({navigation}: DrawerHeaderProps): React.ReactNode => {
 };
 
 const App = () => {
-  const Drawer = createDrawerNavigator<RootStackParamList>();
+  const Drawer = createDrawerNavigator<DrawerParamList>();
   return (
     <GestureHandlerRootView style={containerStyle}>
       <SafeAreaView style={containerStyle}>
