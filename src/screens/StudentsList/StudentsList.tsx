@@ -12,7 +12,11 @@ const StudentsList_: React.FC<{}> = () => {
         data={students.list}
         keyExtractor={item => `${item.id}`}
         renderItem={({item}) => (
-          <StudentItem item={item} onEdit={() => console.log('onEdit')} onRemove={() => console.log('remove')} />
+          <StudentItem
+            item={item}
+            onEdit={() => console.log('onEdit')}
+            onRemove={() => console.log('remove')}
+          />
         )}
       />
     </Flex>

@@ -7,6 +7,7 @@ import {Avatar} from './Avatar';
 import {getRandomColor} from '../../utils/get-random-color';
 import {Button} from '../../components/Button';
 import {useFlag} from '../../hooks/use-flag';
+import Animated, {FadeInUp} from 'react-native-reanimated';
 
 type TProps = Readonly<{
   item: IStudentItem;
@@ -34,7 +35,7 @@ const StudentItem_: React.FC<TProps> = ({item, onRemove, onEdit}: TProps) => {
           <Txt>{name}</Txt>
           <Txt color="grey">{phone}</Txt>
           {isOpened && (
-            <Flex>
+            <Animated.View entering={FadeInUp.duration(100)}>
               {!!commonInfo?.summary && (
                 <Txt color="grey">{commonInfo?.summary}</Txt>
               )}
@@ -55,7 +56,7 @@ const StudentItem_: React.FC<TProps> = ({item, onRemove, onEdit}: TProps) => {
                 <Button onPress={edit} iconName="edit-2" iconColor="grey" />
                 <Button onPress={remove} iconName="trash-2" iconColor="grey" />
               </Flex>
-            </Flex>
+            </Animated.View>
           )}
         </Flex>
         <Avatar fullName={name} color={color} />
