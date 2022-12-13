@@ -1,10 +1,10 @@
 import React from 'react';
 
-import {Flex} from '../../components/Flex';
-import {InfoRow} from '../../components/InfoRow';
-import {ModalInput} from '../../components/ModalInput';
-import {Txt} from '../../components/Txt';
-import {Colors} from '../../constants';
+import {Flex} from '../../../components/Flex';
+import {InfoRow} from '../../../components/InfoRow';
+import {ModalInput} from '../../../components/ModalInput';
+import {Txt} from '../../../components/Txt';
+import {Colors} from '../../../constants';
 
 type TProps = Readonly<{
   header: string;

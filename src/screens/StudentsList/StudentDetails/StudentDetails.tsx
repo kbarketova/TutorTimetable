@@ -1,13 +1,13 @@
 import React from 'react';
 
 import {Contacts} from './Contacts';
-import {InfoRow} from '../../components/InfoRow';
-import {Colors} from '../../constants';
-import {Txt} from '../../components/Txt';
-import students from '../../store/students';
-import {ICommonInfo, IParentInfo, IStudentItem} from '../../types';
-import {getRandomId} from '../../utils/get-random-id';
-import {Modal} from '../../components/Modal';
+import {InfoRow} from '../../../components/InfoRow';
+import {Colors} from '../../../constants';
+import {Txt} from '../../../components/Txt';
+import students from '../../../store/students';
+import {ICommonInfo, IParentInfo, IStudentItem} from '../../../types';
+import {getRandomId} from '../../../utils/get-random-id';
+import {Modal} from '../../../components/Modal';
 
 const StudentDetails_: React.FC<{}> = () => {
   const [studentName, setStudentName] = React.useState<string>('Иван Иванов');

@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import {Colors} from './src/constants';
 import {Login} from './src/screens/Login';
 import {DrawerParamList} from './src/types';
+import {StudentsList} from './src/screens/StudentsList';
 
 const containerStyle: ViewStyle = {
   flex: 1,
@@ -61,6 +62,11 @@ const App = () => {
               name="Timetable"
               component={Timetable}
               options={{title: 'Расписание'}}
+            />
+            <Drawer.Screen
+              name="StudentsList"
+              component={StudentsList}
+              options={{title: 'Список учеников'}}
             />
             <Drawer.Screen
               name="Login"
