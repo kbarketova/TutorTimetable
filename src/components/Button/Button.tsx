@@ -42,6 +42,7 @@ type TProps = Readonly<{
   borderBottomWidth?: number | null;
   borderBottomColor?: string | null;
   iconColor?: string | null;
+  iconSize?: number | null;
 }>;
 
 const buttonHeightSizes: Readonly<Record<TButtonSizes, number | undefined>> = {
@@ -81,10 +82,14 @@ const Button_: React.FC<TProps> = ({
   borderBottomWidth = null,
   borderBottomColor = null,
   iconColor = null,
+  iconSize = null,
 }: TProps) => {
   const activeOpacityFinal = activeOpacity ?? innerActiveOpacity;
-  const activeIconColor = iconColor ?? undefined;
+  const activeIconColor = iconColor ?? Colors.grayDark;
 
+  const iconStyle: ViewStyle | undefined = isActive
+    ? undefined
+    : {opacity: 0.5};
   const style = React.useMemo<ViewStyle>(() => {
     const marginFinal: TSplitResult = margin ? splitProp(margin) : {};
     const paddingFinal: TSplitResult = padding ? splitProp(padding) : {};
@@ -170,8 +175,9 @@ const Button_: React.FC<TProps> = ({
       {!!iconName && (
         <Icon
           name={iconName}
-          size={15}
-          color={isActive ? activeIconColor : Colors.grayLight}
+          size={iconSize ?? 15}
+          color={activeIconColor}
+          style={iconStyle}
         />
       )}
     </TouchableOpacity>

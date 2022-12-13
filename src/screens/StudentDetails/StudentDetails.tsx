@@ -1,6 +1,5 @@
 import React from 'react';
 
-import {Screen} from '../../components/Screen';
 import {Contacts} from './Contacts';
 import {InfoRow} from '../../components/InfoRow';
 import {Colors} from '../../constants';
@@ -8,7 +7,7 @@ import {Txt} from '../../components/Txt';
 import students from '../../store/students';
 import {ICommonInfo, IParentInfo, IStudentItem} from '../../types';
 import {getRandomId} from '../../utils/get-random-id';
-import {ModalButtons} from '../../components/ModalButtons';
+import {Modal} from '../../components/Modal';
 
 const StudentDetails_: React.FC<{}> = () => {
   const [studentName, setStudentName] = React.useState<string>('Иван Иванов');
@@ -64,16 +63,7 @@ const StudentDetails_: React.FC<{}> = () => {
   ]);
 
   return (
-    <Screen
-      isScrollable
-      footer={
-        <ModalButtons
-          flex={0}
-          color="white"
-          padding="10"
-          onConfirm={addStudent}
-        />
-      }>
+    <Modal onConfirm={addStudent} onClose={() => console.log('onClose')}>
       <Contacts
         header="Контакты ученика"
         name={studentName}
@@ -115,7 +105,7 @@ const StudentDetails_: React.FC<{}> = () => {
         onChangeTextAdditional={setSummary}
         flexAdditional={4}
       />
-    </Screen>
+    </Modal>
   );
 };
 

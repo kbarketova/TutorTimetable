@@ -7,7 +7,6 @@ import {
 } from '@react-navigation/drawer';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Timetable} from './src/screens/Timetable';
-import {StudentDetails} from './src/screens/StudentDetails';
 import {NavigationContainer} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import {Colors} from './src/constants';
@@ -62,11 +61,6 @@ const App = () => {
               name="Timetable"
               component={Timetable}
               options={{title: 'Расписание'}}
-            />
-            <Drawer.Screen
-              name="StudentDetails"
-              component={StudentDetails}
-              options={{title: 'Добавить ученика'}}
             />
             <Drawer.Screen
               name="Login"

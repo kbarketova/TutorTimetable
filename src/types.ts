@@ -114,6 +114,5 @@ export type TSelectItemList = ReadonlyArray<TSelectItem>;
 
 export type DrawerParamList = {
   Timetable: undefined;
-  StudentDetails: undefined;
   Login: undefined;
 };

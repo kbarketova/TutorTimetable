@@ -5,16 +5,20 @@ import {
   ViewStyle,
 } from 'react-native';
 
-import {Gesture, GestureDetector} from 'react-native-gesture-handler';
+import {Modal as ModalInner} from 'react-native';
+
+import {
+  Gesture,
+  GestureDetector,
+  ScrollView,
+} from 'react-native-gesture-handler';
 import Animated, {
   Extrapolate,
   interpolate,
-  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
-import Icon from 'react-native-vector-icons/Feather';
 import {Colors} from '../../constants';
 import {Flex} from '../Flex';
 import {ModalButtons} from '../ModalButtons';
@@ -25,9 +29,7 @@ type TProps = Readonly<{
   onConfirm: () => void;
   onClose: () => void;
   header?: string | null;
-  confirmLabel?: string | null;
   isConfirmDisabled?: boolean | null;
-  cancelLabel?: string | null;
   isCancelDisabled?: boolean | null;
 }>;
 
@@ -40,16 +42,10 @@ const mainStyle: ViewStyle = {
   backgroundColor: 'white',
   borderColor: 'rgba(180,180,180,0.5)',
   borderWidth: 1,
-  borderTopLeftRadius: 20,
-  borderTopRightRadius: 20,
   padding: 10,
 };
 
-const decoratorLineStyle: ViewStyle = {
-  alignSelf: 'center',
-};
-
-const overlayStyle: ViewStyle = {
+const backdropStyle: ViewStyle = {
   position: 'absolute',
   top: 0,
   bottom: 0,
@@ -63,9 +59,7 @@ const Modal_: React.FC<TProps> = ({
   onConfirm,
   onClose,
   header = null,
-  confirmLabel = null,
   isConfirmDisabled = null,
-  cancelLabel = null,
   isCancelDisabled = null,
 }: TProps) => {
   const {height} = useWindowDimensions();
@@ -75,10 +69,12 @@ const Modal_: React.FC<TProps> = ({
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{translateY: translateY.value}],
+      borderTopLeftRadius: translateY.value === 0 ? 0 : 20,
+      borderTopRightRadius: translateY.value === 0 ? 0 : 20,
     };
   });
 
-  const overlayAnimatedOpacity = useAnimatedStyle(() => {
+  const backdropAnimatedOpacity = useAnimatedStyle(() => {
     const opacity = interpolate(
       translateY.value,
       [height, 0],
@@ -100,21 +96,6 @@ const Modal_: React.FC<TProps> = ({
         return;
       }
       translateY.value = deltaY;
-    })
-    .onEnd(() => {
-      if (translateY.value < height / 4) {
-        translateY.value = withSpring(0, {damping: 100, stiffness: 400});
-      } else {
-        translateY.value = withSpring(
-          height,
-          {damping: 100, stiffness: 500},
-          isSucceed => {
-            if (isSucceed) {
-              runOnJS(onClose)();
-            }
-          },
-        );
-      }
     });
 
   React.useEffect(() => {
@@ -125,41 +106,35 @@ const Modal_: React.FC<TProps> = ({
   }, [height, translateY]);
 
   return (
-    <>
+    <ModalInner transparent={true}>
       <TouchableWithoutFeedback onPress={onClose}>
-        <Animated.View style={[overlayStyle, overlayAnimatedOpacity]} />
+        <Animated.View style={[backdropStyle, backdropAnimatedOpacity]} />
       </TouchableWithoutFeedback>
       <GestureDetector gesture={gestureHandler}>
         <Animated.View style={[mainStyle, animatedStyle]}>
-          <Icon
-            name="chevron-up"
-            size={25}
-            color={Colors.grayDark}
-            style={decoratorLineStyle}
-          />
-          <Flex>
-            {!!header && (
-              <Txt
-                size="lg"
-                alignSelf="center"
-                fontWeight="bold"
-                color={Colors.grayDark}>
-                {header}
-              </Txt>
-            )}
-            {children}
+          <ScrollView>
             <ModalButtons
-              confirmLabel={confirmLabel}
-              cancelLabel={cancelLabel}
               onConfirm={onConfirm}
               onCancel={onClose}
               isConfirmDisabled={isConfirmDisabled}
               isCancelDisabled={isCancelDisabled}
             />
-          </Flex>
+            <Flex>
+              {!!header && (
+                <Txt
+                  size="lg"
+                  alignSelf="center"
+                  fontWeight="bold"
+                  color={Colors.grayDark}>
+                  {header}
+                </Txt>
+              )}
+              {children}
+            </Flex>
+          </ScrollView>
         </Animated.View>
       </GestureDetector>
-    </>
+    </ModalInner>
   );
 };
 
