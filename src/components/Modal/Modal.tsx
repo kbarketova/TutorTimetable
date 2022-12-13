@@ -1,18 +1,20 @@
 import React from 'react';
 import {
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   useWindowDimensions,
-  View,
   ViewStyle,
 } from 'react-native';
 
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import Animated, {
+  Extrapolate,
+  interpolate,
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
+import Icon from 'react-native-vector-icons/Feather';
 import {Colors} from '../../constants';
 import {Flex} from '../Flex';
 import {ModalButtons} from '../ModalButtons';
@@ -44,12 +46,7 @@ const mainStyle: ViewStyle = {
 };
 
 const decoratorLineStyle: ViewStyle = {
-  width: 75,
-  height: 4,
-  backgroundColor: 'gray',
   alignSelf: 'center',
-  marginVertical: 15,
-  borderRadius: 2,
 };
 
 const overlayStyle: ViewStyle = {
@@ -59,7 +56,6 @@ const overlayStyle: ViewStyle = {
   left: 0,
   right: 0,
   backgroundColor: '#080808',
-  opacity: 0.5,
 };
 
 const Modal_: React.FC<TProps> = ({
@@ -82,6 +78,18 @@ const Modal_: React.FC<TProps> = ({
     };
   });
 
+  const overlayAnimatedOpacity = useAnimatedStyle(() => {
+    const opacity = interpolate(
+      translateY.value,
+      [height, 0],
+      [0, 0.5],
+      Extrapolate.IDENTITY,
+    );
+    return {
+      opacity,
+    };
+  });
+
   const gestureHandler = Gesture.Pan()
     .onStart(() => {
       context.value = {y: translateY.value};
@@ -94,30 +102,41 @@ const Modal_: React.FC<TProps> = ({
       translateY.value = deltaY;
     })
     .onEnd(() => {
-      if (translateY.value < height / 2) {
-        translateY.value = withSpring(0, {damping: 50});
+      if (translateY.value < height / 4) {
+        translateY.value = withSpring(0, {damping: 100, stiffness: 400});
       } else {
-        translateY.value = withSpring(height, {damping: 50}, isSucceed => {
-          if (isSucceed) {
-            runOnJS(onClose)();
-          }
-        });
+        translateY.value = withSpring(
+          height,
+          {damping: 100, stiffness: 500},
+          isSucceed => {
+            if (isSucceed) {
+              runOnJS(onClose)();
+            }
+          },
+        );
       }
     });
 
   React.useEffect(() => {
     translateY.value = withSpring(0, {
-      damping: 20,
-      stiffness: 50,
+      damping: 100,
+      stiffness: 100,
     });
   }, [height, translateY]);
 
   return (
     <>
-      <TouchableOpacity style={overlayStyle} onPress={onClose} />
+      <TouchableWithoutFeedback onPress={onClose}>
+        <Animated.View style={[overlayStyle, overlayAnimatedOpacity]} />
+      </TouchableWithoutFeedback>
       <GestureDetector gesture={gestureHandler}>
         <Animated.View style={[mainStyle, animatedStyle]}>
-          <View style={decoratorLineStyle} />
+          <Icon
+            name="chevron-up"
+            size={25}
+            color={Colors.grayDark}
+            style={decoratorLineStyle}
+          />
           <Flex>
             {!!header && (
               <Txt
