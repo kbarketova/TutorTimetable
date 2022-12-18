@@ -48,7 +48,6 @@ const Selector_: React.FC<TProps> = ({
       top: height / 8,
       width: width - 40,
       borderRadius: 5,
-      height: height / 2,
       padding: 7,
     }),
     [height, width],
@@ -77,11 +76,12 @@ const Selector_: React.FC<TProps> = ({
             <FlatList
               data={data}
               keyExtractor={item => `${item.id}`}
-              renderItem={({item}) => (
+              renderItem={({item, index}) => (
                 <ListItem
                   {...item}
                   isSelected={item.id === selectedId}
                   onPress={select}
+                  useDivider={data.length > 1 && index !== data.length - 1}
                 />
               )}
             />

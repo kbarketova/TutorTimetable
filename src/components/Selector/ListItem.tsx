@@ -8,6 +8,7 @@ type TProps = TItem &
   Readonly<{
     isSelected: boolean;
     onPress: TOnSelectId;
+    useDivider: boolean;
   }>;
 
 const ListItem_: React.FC<TProps> = ({
@@ -15,6 +16,7 @@ const ListItem_: React.FC<TProps> = ({
   name,
   isSelected,
   onPress,
+  useDivider,
 }: TProps) => {
   const press = React.useCallback(() => {
     onPress(id);
@@ -29,11 +31,11 @@ const ListItem_: React.FC<TProps> = ({
         justifyContent="flex-start"
         padding="5"
         labelSize="sm"
+        borderRadius={2}
         color={isSelected ? Colors.sky : undefined}
         labelColor={isSelected ? undefined : 'grey'}
-        borderBottomWidth={0.3}
-        borderBottomColor="rgba(180,180,180,0.5)"
-        borderRadius={2}
+        borderBottomWidth={useDivider ? 0.3 : undefined}
+        borderBottomColor={useDivider ? 'rgba(180,180,180,0.5)' : undefined}
       />
     </>
   );
