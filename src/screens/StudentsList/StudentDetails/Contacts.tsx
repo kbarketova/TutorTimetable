@@ -2,7 +2,6 @@ import React from 'react';
 
 import {Flex} from '../../../components/Flex';
 import {InfoRow} from '../../../components/InfoRow';
-import {ModalInput} from '../../../components/ModalInput';
 import {Txt} from '../../../components/Txt';
 import {Colors} from '../../../constants';
 
@@ -10,6 +9,8 @@ type TProps = Readonly<{
   header: string;
   name: string;
   onChangeName: (value: string) => void;
+  lastName: string;
+  onChangeLastName: (value: string) => void;
   phone: string;
   onChangePhone: (value: string) => void;
   email?: string | null;
@@ -21,6 +22,8 @@ const Contacts_: React.FC<TProps> = ({
   header,
   name,
   onChangeName,
+  lastName,
+  onChangeLastName,
   phone,
   onChangePhone,
   email = null,
@@ -40,19 +43,20 @@ const Contacts_: React.FC<TProps> = ({
         label="Имя"
         value={name}
         onChangeText={onChangeName}
-        labelAdditional="Телефон"
-        valueAdditional={phone}
-        onChangeTextAdditional={onChangePhone}
-        keyboardTypeAdditional="number-pad"
+        labelAdditional="Фамилия"
+        valueAdditional={lastName}
+        onChangeTextAdditional={onChangeLastName}
       />
-      {onChangeEmail && typeof email === 'string' && (
-        <ModalInput
-          onChangeText={onChangeEmail}
-          value={email}
-          placeholder="Эл. почта"
-          keyboardType="email-address"
-        />
-      )}
+      <InfoRow
+        label="Телефон"
+        value={phone}
+        onChangeText={onChangePhone}
+        keyboardType="number-pad"
+        labelAdditional="Эл. почта"
+        valueAdditional={email}
+        onChangeTextAdditional={onChangeEmail}
+        keyboardTypeAdditional="email-address"
+      />
     </Flex>
   );
 };

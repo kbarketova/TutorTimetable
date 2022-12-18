@@ -9,9 +9,10 @@ type TProps = Readonly<{
   value: string;
   onChangeText: (value: string) => void;
   labelAdditional: string;
-  valueAdditional: string;
-  onChangeTextAdditional: (value: string) => void;
+  valueAdditional?: string | null;
+  onChangeTextAdditional?: ((value: string) => void) | null;
   flexAdditional?: number | null;
+  keyboardType?: TKeyboard | null;
   keyboardTypeAdditional?: TKeyboard | null;
 }>;
 
@@ -20,9 +21,10 @@ const InfoRow_: React.FC<TProps> = ({
   value,
   onChangeText,
   labelAdditional,
-  valueAdditional,
-  onChangeTextAdditional,
+  valueAdditional = null,
+  onChangeTextAdditional = null,
   flexAdditional = null,
+  keyboardType = null,
   keyboardTypeAdditional = null,
 }: TProps) => {
   return (
@@ -32,15 +34,18 @@ const InfoRow_: React.FC<TProps> = ({
         value={value}
         placeholder={label}
         flex={1}
-        margin="0 10 0 0"
+        margin={onChangeTextAdditional ? '0 10 0 0' : undefined}
+        keyboardType={keyboardType}
       />
-      <ModalInput
-        onChangeText={onChangeTextAdditional}
-        value={valueAdditional}
-        placeholder={labelAdditional}
-        flex={flexAdditional ?? 1}
-        keyboardType={keyboardTypeAdditional}
-      />
+      {onChangeTextAdditional && valueAdditional !== null && (
+        <ModalInput
+          onChangeText={onChangeTextAdditional}
+          value={valueAdditional}
+          placeholder={labelAdditional}
+          flex={flexAdditional ?? 1}
+          keyboardType={keyboardTypeAdditional}
+        />
+      )}
     </Flex>
   );
 };

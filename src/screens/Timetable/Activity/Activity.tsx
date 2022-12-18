@@ -27,8 +27,8 @@ const Activity_: React.FC<TProps> = ({item, onEdit, onRemove}: TProps) => {
   const [isOpened, , , onToggle] = useFlag();
   const height = useSharedValue(0);
 
-  const {time, activityId, student, color} = item;
-  const {name, phone} = student;
+  const {time, activityId, student} = item;
+  const {name, lastName, phone} = student;
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -57,9 +57,9 @@ const Activity_: React.FC<TProps> = ({item, onEdit, onRemove}: TProps) => {
       <Txt flex={1} size="lg" color="deepskyblue">
         {time}
       </Txt>
-      <Flex flex={3} color={color} padding={10} borderRadius={3}>
+      <Flex flex={3} color={student.color} padding={10} borderRadius={3}>
         <Txt color="white" size="md">
-          {name}
+          {name} {lastName}
         </Txt>
         {!!phone && <Txt color="white" size="sm">{`Тел: ${phone}`}</Txt>}
         <Animated.View style={[mainStyle, animatedStyle]}>

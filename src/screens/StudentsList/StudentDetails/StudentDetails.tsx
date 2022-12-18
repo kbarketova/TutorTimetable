@@ -5,33 +5,63 @@ import {InfoRow} from '../../../components/InfoRow';
 import {Colors} from '../../../constants';
 import {Txt} from '../../../components/Txt';
 import students from '../../../store/students';
-import {ICommonInfo, IParentInfo, IStudentItem} from '../../../types';
-import {getRandomId} from '../../../utils/get-random-id';
+import {
+  ICommonInfo,
+  IParentInfo,
+  IStudentInfo,
+  IStudentItem,
+} from '../../../types';
 import {Modal} from '../../../components/Modal';
 
-const StudentDetails_: React.FC<{}> = () => {
-  const [studentName, setStudentName] = React.useState<string>('Иван Иванов');
-  const [studentPhone, setStudentPhone] = React.useState<string>('');
-  const [studentEmail, setStudentEmail] =
-    React.useState<string>('test@gmail.com');
+type TProps = Readonly<{
+  onClose: () => void;
+  student: IStudentItem | null;
+}>;
 
-  const [parentName, setParentName] = React.useState<string>('Иван Иванов');
-  const [parentPhone, setParentPhone] = React.useState<string>('');
-  const [grade, setGrade] = React.useState<string>('');
-  const [price, setPrice] = React.useState<string>('');
-  const [address, setAddress] = React.useState<string>('');
-  const [summary, setSummary] = React.useState<string>('');
+const StudentDetails_: React.FC<TProps> = ({
+  onClose,
+  student = null,
+}: TProps) => {
+  const [studentName, setStudentName] = React.useState<string>(
+    student?.name ?? '',
+  );
+  const [studentLastName, setStudentLastName] = React.useState<string>(
+    student?.lastName ?? '',
+  );
+  const [studentPhone, setStudentPhone] = React.useState<string>(
+    student?.phone ?? '',
+  );
+  const [studentEmail, setStudentEmail] = React.useState<string>(
+    student?.email ?? '',
+  );
 
-  const addStudent = React.useCallback(() => {
-    const id = getRandomId();
-    if (!students.isUniqueId(id)) {
-      console.log('Id is not unique, please try again');
-      return;
-    }
+  const [parentName, setParentName] = React.useState<string>(
+    student?.parent?.name ?? '',
+  );
+  const [parentLastName, setParentLastName] = React.useState<string>(
+    student?.parent?.lastName ?? '',
+  );
+  const [parentPhone, setParentPhone] = React.useState<string>(
+    student?.parent?.phone ?? '',
+  );
+  const [grade, setGrade] = React.useState<string>(
+    student?.commonInfo?.grade ?? '',
+  );
+  const [price, setPrice] = React.useState<string>(
+    student?.commonInfo?.price ?? '',
+  );
+  const [address, setAddress] = React.useState<string>(student?.address ?? '');
+  const [summary, setSummary] = React.useState<string>(
+    student?.commonInfo?.summary ?? '',
+  );
+
+  const isSaveDisabled: boolean = !studentName;
+  const saveStudent = React.useCallback(() => {
     const parent: IParentInfo | undefined =
       parentName || parentPhone
         ? {
             name: parentName,
+            lastName: parentLastName,
             phone: parentPhone,
           }
         : undefined;
@@ -43,31 +73,48 @@ const StudentDetails_: React.FC<{}> = () => {
           }
         : undefined;
 
-    const student: IStudentItem = {
+    const item: IStudentInfo = {
       name: studentName,
-      id,
+      lastName: studentLastName,
       address,
       phone: studentPhone,
+      email: studentEmail,
       parent: parent,
       commonInfo,
     };
-    students.addStudent(student);
+
+    if (student !== null) {
+      students.editStudent({...student, ...item});
+    } else {
+      students.addStudent(item);
+    }
+    onClose();
   }, [
     address,
+    onClose,
+    parentLastName,
     parentName,
     parentPhone,
     price,
+    student,
+    studentEmail,
+    studentLastName,
     studentName,
     studentPhone,
     summary,
   ]);
 
   return (
-    <Modal onConfirm={addStudent} onClose={() => console.log('onClose')}>
+    <Modal
+      onConfirm={saveStudent}
+      onClose={onClose}
+      isConfirmDisabled={isSaveDisabled}>
       <Contacts
         header="Контакты ученика"
         name={studentName}
         onChangeName={setStudentName}
+        lastName={studentLastName}
+        onChangeLastName={setStudentLastName}
         phone={studentPhone}
         onChangePhone={setStudentPhone}
         email={studentEmail}
@@ -86,6 +133,8 @@ const StudentDetails_: React.FC<{}> = () => {
         header="Контакты родителя"
         name={parentName}
         onChangeName={setParentName}
+        lastName={parentLastName}
+        onChangeLastName={setParentLastName}
         phone={parentPhone}
         onChangePhone={setParentPhone}
       />

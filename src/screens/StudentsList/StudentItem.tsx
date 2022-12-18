@@ -4,7 +4,6 @@ import {Flex} from '../../components/Flex';
 import {Txt} from '../../components/Txt';
 import {IStudentItem} from '../../types';
 import {Avatar} from './Avatar';
-import {getRandomColor} from '../../utils/get-random-color';
 import {Button} from '../../components/Button';
 import {useFlag} from '../../hooks/use-flag';
 import Animated, {FadeInUp} from 'react-native-reanimated';
@@ -12,16 +11,15 @@ import Animated, {FadeInUp} from 'react-native-reanimated';
 type TProps = Readonly<{
   item: IStudentItem;
   onRemove: (id: number) => void;
-  onEdit: (id: number) => void;
+  onEdit: (item: IStudentItem) => void;
 }>;
 
 const StudentItem_: React.FC<TProps> = ({item, onRemove, onEdit}: TProps) => {
   const [isOpened, , , toggle] = useFlag();
-  const {id, name, phone, commonInfo, parent} = item;
+  const {id, name, lastName, phone, commonInfo, parent, color} = item;
 
-  const color = React.useMemo<string>(() => getRandomColor(), []);
   const remove = React.useCallback(() => onRemove(id), [id, onRemove]);
-  const edit = React.useCallback(() => onEdit(id), [id, onEdit]);
+  const edit = React.useCallback(() => onEdit(item), [item, onEdit]);
 
   return (
     <Button
@@ -32,7 +30,7 @@ const StudentItem_: React.FC<TProps> = ({item, onRemove, onEdit}: TProps) => {
       onPress={toggle}>
       <Flex flexDirection="row" justifyContent="space-between">
         <Flex>
-          <Txt>{name}</Txt>
+          <Txt>{`${name} ${lastName}`}</Txt>
           <Txt color="grey">{phone}</Txt>
           {isOpened && (
             <Animated.View entering={FadeInUp.duration(100)}>
@@ -43,11 +41,15 @@ const StudentItem_: React.FC<TProps> = ({item, onRemove, onEdit}: TProps) => {
                 <Txt color="grey">{`Цена за занятие: ${commonInfo?.price}`}</Txt>
               )}
               {parent && (
-                <Flex flexDirection="row" justifyContent="space-between">
-                  <Txt color="grey">Родитель:</Txt>
-                  {!!parent?.name && <Txt color="grey">{parent?.name}</Txt>}
-                  {!!parent?.phone && <Txt color="grey">{parent?.phone}</Txt>}
-                </Flex>
+                <Txt color="grey">
+                  Родитель:
+                  {!!parent?.name && (
+                    <Txt color="grey">{` ${parent?.name}`}</Txt>
+                  )}
+                  {!!parent?.phone && (
+                    <Txt color="grey">{` ${parent?.phone}`}</Txt>
+                  )}
+                </Txt>
               )}
               <Flex
                 flexDirection="row"
@@ -59,7 +61,7 @@ const StudentItem_: React.FC<TProps> = ({item, onRemove, onEdit}: TProps) => {
             </Animated.View>
           )}
         </Flex>
-        <Avatar fullName={name} color={color} />
+        <Avatar name={name} color={color} lastName={lastName} />
       </Flex>
     </Button>
   );

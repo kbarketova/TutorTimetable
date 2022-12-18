@@ -1,7 +1,8 @@
 import React from 'react';
 import {ViewStyle, TouchableOpacity} from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
 
-import {Txt} from '../../../components/Txt';
+import {Txt} from '../Txt';
 
 const buttonStyle: ViewStyle = {
   position: 'absolute',
@@ -25,14 +26,23 @@ const buttonStyle: ViewStyle = {
 
 type TProps = Readonly<{
   onPress: () => void;
+  label?: string | null;
+  iconName?: string | null;
 }>;
 
-const ButtonAdd_: React.FC<TProps> = ({onPress}: TProps) => {
+const ButtonAdd_: React.FC<TProps> = ({
+  onPress,
+  label = null,
+  iconName = null,
+}: TProps) => {
   return (
     <TouchableOpacity style={buttonStyle} activeOpacity={0.6} onPress={onPress}>
-      <Txt color="white" size="lg">
-        +
-      </Txt>
+      {!!label && (
+        <Txt color="white" size="lg">
+          {label}
+        </Txt>
+      )}
+      {!!iconName && <Icon name={iconName} size={25} color="white" />}
     </TouchableOpacity>
   );
 };

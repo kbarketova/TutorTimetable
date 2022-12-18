@@ -73,20 +73,28 @@ export type TPropsTxt = Readonly<{
 export interface ICommonInfo {
   price: string;
   summary?: string;
+  grade?: string;
 }
 
 export interface IParentInfo {
   name: string;
+  lastName?: string;
   phone?: string;
 }
 
-export interface IStudentItem {
+export interface IStudentInfo {
   name: string;
-  id: number;
+  lastName?: string;
   address?: string;
   phone?: string;
+  email?: string;
   parent?: IParentInfo;
   commonInfo?: ICommonInfo;
+}
+
+export interface IStudentItem extends IStudentInfo {
+  id: number;
+  color: string;
 }
 
 export interface IActivity {
@@ -95,7 +103,6 @@ export interface IActivity {
   date: string;
   time: string;
   student: IStudentItem;
-  color: string;
   address?: string; // lessons can have their own address. If not defined, then use students address
 }
 

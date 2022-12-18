@@ -28,6 +28,9 @@ class Timetable {
     const acts = this.activities[date] || [];
     const itemAt = acts.findIndex(x => x.activityId === activityId);
 
+    if (itemAt < 0) {
+      return;
+    }
     this.activities[date] = [
       ...acts.slice(0, itemAt),
       activity,
@@ -53,7 +56,7 @@ class Timetable {
       return {
         ...prev,
         [key]: {
-          dots: values.map(x => ({key: x.activityId, color: x.color})),
+          dots: values.map(x => ({key: x.activityId, color: x.student.color})),
         },
       };
     }, {});

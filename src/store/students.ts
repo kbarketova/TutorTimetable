@@ -1,6 +1,7 @@
-import uniqWith from 'lodash/fp/uniqWith';
 import {action, makeObservable, observable} from 'mobx';
-import {IStudentItemList, IStudentItem} from '../types';
+import {IStudentItemList, IStudentItem, IStudentInfo} from '../types';
+import {getRandomColor} from '../utils/get-random-color';
+import {getRandomId} from '../utils/get-random-id';
 
 class Students {
   list: IStudentItemList = [];
@@ -8,16 +9,47 @@ class Students {
     makeObservable(this, {
       list: observable,
       addStudent: action,
+      addFullStudent: action,
+      removeStudent: action,
+      editStudent: action,
       isUniqueId: action,
     });
   }
-  addStudent(student: IStudentItem) {
-    const listUpdated = [...this.list, student];
-    this.list = uniqWith(function (a, b) {
-      return a.id === b.id;
-    }, listUpdated);
+  addStudent(info: IStudentInfo) {
+    const id = getRandomId();
+    const itemAt = this.list.findIndex(x => {
+      return x.id === id;
+    });
+    if (itemAt < 0) {
+      const color = getRandomColor();
+      this.list = [...this.list, {...info, id, color}];
+    }
   }
-
+  addFullStudent(student: IStudentItem) {
+    const itemAt = this.list.findIndex(x => {
+      return x.id === student.id;
+    });
+    if (itemAt < 0) {
+      this.list = [...this.list, student];
+    }
+  }
+  removeStudent(id: number) {
+    if (!this.list) {
+      return;
+    }
+    this.list = this.list.filter(x => x.id !== id);
+  }
+  editStudent(student: IStudentItem) {
+    const itemAt = this.list.findIndex(x => x.id === student.id);
+    if (itemAt < 0) {
+      return;
+    }
+    this.list = [
+      ...this.list.slice(0, itemAt),
+      student,
+      ...this.list.slice(itemAt + 1),
+    ];
+  }
   isUniqueId(id: number) {
     const ids = this.list.map(x => x.id);
     return !ids.includes(id);

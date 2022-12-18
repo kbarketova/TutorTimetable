@@ -19,6 +19,7 @@ import {Flex} from '../../components/Flex';
 import {Selector} from '../../components/Selector';
 import {ModalInput} from '../../components/ModalInput';
 import {getRandomId} from '../../utils/get-random-id';
+import {getRandomColor} from '../../utils/get-random-color';
 
 type TProps = Readonly<{
   onAdd: TOnAddActivity;
@@ -29,7 +30,7 @@ type TProps = Readonly<{
 
 const createItem = (student: IStudentItem): TSelectItem => ({
   id: student.id,
-  name: student.name,
+  name: `${student.name} ${student.lastName}`,
 });
 
 const AddActivity_: React.FC<TProps> = ({
@@ -48,6 +49,9 @@ const AddActivity_: React.FC<TProps> = ({
 
   const [theme, setTheme] = React.useState<string>(activity?.theme ?? '');
   const [name, setName] = React.useState<string>(activity?.student.name ?? '');
+  const [lastName, setLastName] = React.useState<string>(
+    activity?.student.lastName ?? '',
+  );
   const [phone, setPhone] = React.useState<string>(
     activity?.student.phone ?? '',
   );
@@ -109,16 +113,28 @@ const AddActivity_: React.FC<TProps> = ({
       theme,
       time,
       student: {
-        name,
         id,
-        phone,
+        color: getRandomColor(),
+        name: name.trim(),
+        lastName: lastName.trim(),
+        phone: phone.trim(),
       },
       address,
     };
 
     onAdd(isSaveEnabled, data);
     onClose();
-  }, [address, isSaveEnabled, name, onAdd, onClose, phone, theme, time]);
+  }, [
+    address,
+    isSaveEnabled,
+    lastName,
+    name,
+    onAdd,
+    onClose,
+    phone,
+    theme,
+    time,
+  ]);
 
   const selectList = React.useMemo<TSelectItemList>(
     () => students.list.map(createItem),
@@ -149,6 +165,11 @@ const AddActivity_: React.FC<TProps> = ({
         <>
           <ModalInput onChangeText={setName} value={name} placeholder="Имя" />
           <ModalInput
+            onChangeText={setLastName}
+            value={lastName}
+            placeholder="Фамилия"
+          />
+          <ModalInput
             onChangeText={setPhone}
             value={phone}
             placeholder="Телефон"
@@ -159,7 +180,7 @@ const AddActivity_: React.FC<TProps> = ({
         <Selector
           isReadonly={isOldActivity}
           label="Ученик"
-          value={name ? `${name} ${phone}` : 'Не выбран'}
+          value={name ? `${name} ${lastName} ${phone}` : 'Не выбран'}
           data={selectList}
           selectedId={selectedId}
           onSelect={setStudent}

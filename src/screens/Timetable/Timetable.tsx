@@ -14,9 +14,8 @@ import {IActivity, TActivityList} from '../../types';
 import {useFlag} from '../../hooks/use-flag';
 import {AddActivity} from './AddActivity';
 import {TOnAddActivity, TOnEditActivity, TOnManageActivity} from './types';
-import {getRandomColor} from '../../utils/get-random-color';
-import {ButtonAdd} from './ButtonAdd';
 import students from '../../store/students';
+import {ButtonAdd} from '../../components/ButtonAdd';
 
 const style: ViewStyle = {
   borderBottomWidth: 2,
@@ -56,13 +55,10 @@ const Timetable_: React.FC<{}> = observer(() => {
         ...data,
         activityId: `${date}|${data.student.id}`,
         date,
-        color: getRandomColor(),
       });
 
       if (saveStudent) {
-        students.addStudent({
-          ...data.student,
-        });
+        students.addFullStudent(data.student);
       }
     },
     [date],
@@ -107,7 +103,7 @@ const Timetable_: React.FC<{}> = observer(() => {
           )}
         />
       </Flex>
-      <ButtonAdd onPress={openAdd} />
+      <ButtonAdd onPress={openAdd} label="+" />
       {isAddVisible && (
         <AddActivity
           onAdd={addActivityForDate}
