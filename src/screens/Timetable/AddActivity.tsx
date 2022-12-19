@@ -2,13 +2,14 @@ import React from 'react';
 
 import moment from 'moment';
 import {Modal} from '../../components/Modal';
-import {Switcher} from '../../components/Switcher';
 import {useFlag} from '../../hooks/use-flag';
 import {TimePicker} from './TimePicker';
-import {TActivity, TOnAddActivity, TOnEditActivity} from './types';
+import {TOnAddActivity, TOnEditActivity} from './types';
 import students from '../../store/students';
 import {
+  AddressOptions,
   IActivity,
+  IActivityRaw,
   IStudentItem,
   TSelectItem,
   TSelectItemList,
@@ -20,15 +21,17 @@ import {Selector} from '../../components/Selector';
 import {ModalInput} from '../../components/ModalInput';
 import {getRandomId} from '../../utils/get-random-id';
 import {getRandomColor} from '../../utils/get-random-color';
+import {PressableField} from '../../components/PressableField';
 
 type TProps = Readonly<{
   onAdd: TOnAddActivity;
   onEdit: TOnEditActivity;
   onClose: () => void;
   activity?: IActivity | null;
+  student?: IStudentItem | null;
 }>;
 
-const createItem = (student: IStudentItem): TSelectItem => ({
+const createStudentItem = (student: IStudentItem): TSelectItem => ({
   id: student.id,
   name: `${student.name} ${student.lastName}`,
 });
@@ -38,29 +41,30 @@ const AddActivity_: React.FC<TProps> = ({
   onEdit,
   onClose,
   activity = null,
+  student = null,
 }: TProps) => {
   const hasStudentsList: boolean = students.list.length > 0;
 
-  const [isSaveEnabled, , , toggleSave] = useFlag();
   const [isNewStudent, setIsNewStudent, setIsOldStudent] = useFlag(
     !hasStudentsList,
   );
   const isOldActivity: boolean = !!activity?.activityId;
 
   const [theme, setTheme] = React.useState<string>(activity?.theme ?? '');
-  const [name, setName] = React.useState<string>(activity?.student.name ?? '');
+  const [name, setName] = React.useState<string>(student?.name ?? '');
   const [lastName, setLastName] = React.useState<string>(
-    activity?.student.lastName ?? '',
+    student?.lastName ?? '',
   );
-  const [phone, setPhone] = React.useState<string>(
-    activity?.student.phone ?? '',
-  );
-  const [address, setAddress] = React.useState<string>(
-    activity?.student.address ?? '',
-  );
+  const [phone, setPhone] = React.useState<string>(student?.phone ?? '');
+  const [address, setAddress] = React.useState<string>(student?.address ?? '');
   const [time, setTime] = React.useState<string>(
     activity?.time ?? moment().format('hh:mm'),
   );
+
+  const [selectedAddressId, setSelectedAddressId] =
+    React.useState<AddressOptions>(
+      activity?.addressId ?? AddressOptions.Unknown,
+    );
 
   const [selectedId, setSelectedId] = React.useState<number>(0);
   const isSaveDisabled: boolean =
@@ -69,18 +73,40 @@ const AddActivity_: React.FC<TProps> = ({
     (!!activity &&
       activity.theme === theme &&
       activity.time === time &&
-      activity.address === address);
+      activity.addressId === selectedAddressId);
 
-  const setStudent = React.useCallback<(id: number) => void>(id => {
-    const student = students.list.find(x => x.id === id);
+  const actAddressOptions = React.useMemo<TSelectItemList>(() => {
+    const list = [
+      {name: 'Не выбрано', id: AddressOptions.Unknown},
+      {name: 'Удаленно', id: AddressOptions.Remote},
+      {name: 'По адресу учителя', id: AddressOptions.TeacherPlace},
+    ];
 
-    if (!student) {
-      return;
+    if (student?.address) {
+      return [
+        ...list,
+        {
+          name: 'По адресу ученика',
+          id: AddressOptions.StudentPlace,
+        },
+      ];
     }
-    setSelectedId(id);
-    setName(student.name);
-    setPhone(student.phone ?? '');
-  }, []);
+    return list;
+  }, [student?.address]);
+
+  const selectStudent = React.useCallback<(id: number) => void>(
+    id => {
+      const item = students.getStudent(activity?.studentId ?? -1);
+
+      if (!item) {
+        return;
+      }
+      setSelectedId(id);
+      setName(item.name);
+      setPhone(item.phone ?? '');
+    },
+    [activity?.studentId],
+  );
 
   const editActivity = React.useCallback(() => {
     if (!activity) {
@@ -95,10 +121,18 @@ const AddActivity_: React.FC<TProps> = ({
       ...activity,
       theme,
       time,
-      address,
+      addressId: selectedAddressId,
     });
     onClose();
-  }, [activity, address, isSaveDisabled, onClose, onEdit, theme, time]);
+  }, [
+    activity,
+    isSaveDisabled,
+    onClose,
+    onEdit,
+    selectedAddressId,
+    theme,
+    time,
+  ]);
 
   const addActivity = React.useCallback(() => {
     if (!time) {
@@ -109,36 +143,46 @@ const AddActivity_: React.FC<TProps> = ({
       console.log('Id is not unique, please try again');
       return;
     }
-    const data: TActivity = {
+    const color = getRandomColor();
+    const data: IActivityRaw = {
       theme,
       time,
-      student: {
-        id,
-        color: getRandomColor(),
-        name: name.trim(),
-        lastName: lastName.trim(),
-        phone: phone.trim(),
-      },
-      address,
+      addressId: selectedAddressId,
+      studentId: id,
+      color,
     };
 
-    onAdd(isSaveEnabled, data);
+    onAdd(data, {
+      id,
+      color,
+      name: name.trim(),
+      lastName: lastName.trim(),
+      phone: phone.trim(),
+      address,
+    });
     onClose();
   }, [
     address,
-    isSaveEnabled,
     lastName,
     name,
     onAdd,
     onClose,
     phone,
+    selectedAddressId,
     theme,
     time,
   ]);
 
   const selectList = React.useMemo<TSelectItemList>(
-    () => students.list.map(createItem),
+    () => students.list.map(createStudentItem),
     [],
+  );
+
+  const actAddressDescription = React.useMemo<string>(
+    () =>
+      actAddressOptions.find(x => x.id === selectedAddressId)?.name ??
+      actAddressOptions[AddressOptions.Unknown].name,
+    [actAddressOptions, selectedAddressId],
   );
 
   return (
@@ -175,6 +219,11 @@ const AddActivity_: React.FC<TProps> = ({
             placeholder="Телефон"
             keyboardType="number-pad"
           />
+          <ModalInput
+            onChangeText={setAddress}
+            value={address}
+            placeholder="Адрес"
+          />
         </>
       ) : (
         <Selector
@@ -183,27 +232,29 @@ const AddActivity_: React.FC<TProps> = ({
           value={name ? `${name} ${lastName} ${phone}` : 'Не выбран'}
           data={selectList}
           selectedId={selectedId}
-          onSelect={setStudent}
+          onSelect={selectStudent}
+        />
+      )}
+      <Selector
+        label="Место проведения"
+        value={actAddressDescription}
+        data={actAddressOptions}
+        selectedId={selectedAddressId}
+        onSelect={setSelectedAddressId}
+      />
+      {isOldActivity && selectedAddressId === AddressOptions.StudentPlace && (
+        <PressableField
+          isReadonly
+          label="Адрес ученика"
+          value={student?.address ?? ''}
         />
       )}
       <TimePicker time={time} onChangeTime={setTime} />
-      <ModalInput
-        onChangeText={setAddress}
-        value={address}
-        placeholder="Адрес"
-      />
       <ModalInput
         onChangeText={setTheme}
         value={theme}
         placeholder="Тема занятия"
       />
-      {!isOldActivity && isNewStudent && (
-        <Switcher
-          isEnabled={isSaveEnabled}
-          onToggle={toggleSave}
-          label="Сохранить данные ученика"
-        />
-      )}
     </Modal>
   );
 };

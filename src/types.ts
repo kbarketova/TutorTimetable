@@ -97,13 +97,24 @@ export interface IStudentItem extends IStudentInfo {
   color: string;
 }
 
-export interface IActivity {
-  activityId: string;
+export enum AddressOptions {
+  Unknown = 0,
+  Remote = 1,
+  StudentPlace = 2,
+  TeacherPlace = 3,
+}
+
+export interface IActivityRaw {
   theme: string;
-  date: string;
   time: string;
-  student: IStudentItem;
-  address?: string; // lessons can have their own address. If not defined, then use students address
+  addressId: AddressOptions; // lessons can have their own address. If not defined, then use students address
+  studentId: number;
+  color: string;
+}
+
+export interface IActivity extends IActivityRaw {
+  activityId: string;
+  date: string;
 }
 
 export type TActivityList = Array<IActivity>;

@@ -54,6 +54,12 @@ class Students {
     const ids = this.list.map(x => x.id);
     return !ids.includes(id);
   }
+  getStudent(id: number) {
+    if (this.list.length === 0) {
+      return;
+    }
+    return this.list.find(x => x.id === id);
+  }
 }
 
 export default new Students();

@@ -18,7 +18,7 @@ import {TSplitResult} from '../types';
 type TButtonSizes = TSize | 'none';
 
 type TProps = Readonly<{
-  onPress: () => void;
+  onPress: (() => void) | null;
   label?: string | null;
   flex?: number | null;
   flexDirection?: TFlexDirection | null;
@@ -84,6 +84,7 @@ const Button_: React.FC<TProps> = ({
   iconColor = null,
   iconSize = null,
 }: TProps) => {
+  const onPressFinal = onPress ?? undefined;
   const activeOpacityFinal = activeOpacity ?? innerActiveOpacity;
   const activeIconColor = iconColor ?? Colors.grayDark;
 
@@ -146,7 +147,7 @@ const Button_: React.FC<TProps> = ({
       <TouchableOpacity
         style={style}
         activeOpacity={activeOpacityFinal}
-        onPress={isActive ? onPress : undefined}>
+        onPress={isActive ? onPressFinal : undefined}>
         {children}
       </TouchableOpacity>
     );
@@ -157,7 +158,7 @@ const Button_: React.FC<TProps> = ({
       <TouchableOpacity
         style={style}
         activeOpacity={activeOpacityFinal}
-        onPress={isActive ? onPress : undefined}
+        onPress={isActive ? onPressFinal : undefined}
       />
     );
   }
@@ -166,7 +167,7 @@ const Button_: React.FC<TProps> = ({
     <TouchableOpacity
       style={style}
       activeOpacity={activeOpacityFinal}
-      onPress={isActive ? onPress : undefined}>
+      onPress={isActive ? onPressFinal : undefined}>
       {!!label && (
         <Txt size={labelSize ?? 'md'} color={labelColor ?? 'white'}>
           {label}

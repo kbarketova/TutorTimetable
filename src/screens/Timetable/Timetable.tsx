@@ -10,7 +10,7 @@ import moment from 'moment';
 import {Activity} from './Activity';
 import {Flex} from '../../components/Flex';
 import {getSortedByTime} from './get-sorted-by-time';
-import {IActivity, TActivityList} from '../../types';
+import {IActivity, IStudentItem, TActivityList} from '../../types';
 import {useFlag} from '../../hooks/use-flag';
 import {AddActivity} from './AddActivity';
 import {TOnAddActivity, TOnEditActivity, TOnManageActivity} from './types';
@@ -30,6 +30,7 @@ const Timetable_: React.FC<{}> = observer(() => {
   const [isAddVisible, openAdd, closeAdd] = useFlag();
 
   const [activity, setActivity] = React.useState<IActivity | null>(null);
+  const [student, setStudent] = React.useState<IStudentItem | null>(null);
   const [date, setDate] = React.useState<string>(moment().format('YYYY-MM-DD'));
 
   const sorted: TActivityList = timetable.activities[date]
@@ -39,6 +40,7 @@ const Timetable_: React.FC<{}> = observer(() => {
   const closeActivityModal = React.useCallback(() => {
     closeAdd();
     setActivity(null);
+    setStudent(null);
   }, [closeAdd]);
 
   const pressDay = React.useCallback<TPressDate>(day => {
@@ -50,16 +52,14 @@ const Timetable_: React.FC<{}> = observer(() => {
   }, []);
 
   const addActivityForDate = React.useCallback<TOnAddActivity>(
-    (saveStudent, data) => {
+    (data, item) => {
       timetable.addActivity({
         ...data,
-        activityId: `${date}|${data.student.id}`,
+        activityId: `${date}|${data.studentId}`,
         date,
       });
 
-      if (saveStudent) {
-        students.addFullStudent(data.student);
-      }
+      students.addFullStudent(item);
     },
     [date],
   );
@@ -71,7 +71,14 @@ const Timetable_: React.FC<{}> = observer(() => {
         console.log('cannot open activity');
         return;
       }
+      const item = students.getStudent(actv.studentId);
+
+      if (!item) {
+        console.log('cannot find student for this activity');
+        return;
+      }
       setActivity(actv);
+      setStudent(item);
       openAdd();
     },
     [openAdd],
@@ -110,6 +117,7 @@ const Timetable_: React.FC<{}> = observer(() => {
           onEdit={editActivity}
           onClose={closeActivityModal}
           activity={activity}
+          student={student}
         />
       )}
     </Screen>

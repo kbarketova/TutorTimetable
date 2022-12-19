@@ -56,7 +56,7 @@ class Timetable {
       return {
         ...prev,
         [key]: {
-          dots: values.map(x => ({key: x.activityId, color: x.student.color})),
+          dots: values.map(x => ({key: x.activityId, color: x.color})),
         },
       };
     }, {});

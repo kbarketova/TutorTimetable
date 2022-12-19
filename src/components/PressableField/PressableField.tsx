@@ -7,14 +7,14 @@ import {Txt} from '../Txt';
 type TProps = Readonly<{
   label: string;
   value: string;
-  onPress: () => void;
+  onPress?: (() => void) | null;
   isReadonly?: boolean;
 }>;
 
 const PressableField_: React.FC<TProps> = ({
   label,
   value,
-  onPress,
+  onPress = null,
   isReadonly = false,
 }: TProps) => {
   return (

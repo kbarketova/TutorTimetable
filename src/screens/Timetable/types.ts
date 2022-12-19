@@ -1,13 +1,9 @@
-import {IActivity, IStudentItem} from '../../types';
+import {IActivity, IActivityRaw, IStudentItem} from '../../types';
 
-export type TActivity = Readonly<{
-  theme: string;
-  time: string;
-  student: IStudentItem;
-  address: string;
-}>;
-
-export type TOnAddActivity = (saveStudent: boolean, data: TActivity) => void;
+export type TOnAddActivity = (
+  data: IActivityRaw,
+  student: IStudentItem,
+) => void;
 
 export type TOnManageActivity = (id: string) => void;
 
