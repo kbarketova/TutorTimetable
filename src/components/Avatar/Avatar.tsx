@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, ViewStyle} from 'react-native';
 
-import {Txt} from '../../../components/Txt';
+import {Txt} from '../Txt';
 import {getInitials} from './get-initials';
 
 type TProps = Readonly<{
