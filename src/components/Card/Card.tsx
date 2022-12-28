@@ -39,8 +39,8 @@ const Card_: React.FC<TProps> = ({
       onPress={toggle}>
       <Flex flexDirection="row" justifyContent="space-between">
         <Flex>
-          <Txt>{`${name} ${lastName}`}</Txt>
-          {!!phone && <Txt color="grey">{phone}</Txt>}
+          <Txt color="#525B62">{`${name} ${lastName}`}</Txt>
+          {!!phone && <Txt color="#87949D">{phone}</Txt>}
           {isOpened && (
             <Animated.View entering={FadeInUp.duration(100)}>
               {children}
@@ -48,11 +48,15 @@ const Card_: React.FC<TProps> = ({
                 flexDirection="row"
                 justifyContent="space-between"
                 padding="15 0 5 0">
-                <Button onPress={onEdit} iconName="edit-2" iconColor="grey" />
+                <Button
+                  onPress={onEdit}
+                  iconName="edit-2"
+                  iconColor="#525B62"
+                />
                 <Button
                   onPress={onRemove}
                   iconName="trash-2"
-                  iconColor="grey"
+                  iconColor="#525B62"
                 />
               </Flex>
             </Animated.View>

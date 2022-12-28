@@ -51,7 +51,7 @@ const Activity_: React.FC<TProps> = observer(
 
     return (
       <Flex flexDirection="row">
-        <Txt flex={1} size="lg" color="gray" fontWeight="300">
+        <Txt flex={1} size="lg" color="#87949D" fontWeight="300">
           {time}
         </Txt>
         <Card
@@ -63,12 +63,12 @@ const Activity_: React.FC<TProps> = observer(
           onEdit={edit}
           onRemove={remove}>
           {!!theme && (
-            <Txt color="grey" size="sm">
+            <Txt color="#87949D" size="sm">
               {theme}
             </Txt>
           )}
           {!!activityPlace && (
-            <Txt color="grey" size="sm">
+            <Txt color="#87949D" size="sm">
               {`Место проведения: ${activityPlace}`}
             </Txt>
           )}

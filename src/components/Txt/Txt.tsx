@@ -17,7 +17,6 @@ type TProps = TPropsTxt &
   }>;
 
 const innerLabelStyle: TextStyle = {
-  fontWeight: '400',
   color: BlueThemeInput.textColorEnabled,
 };
 
@@ -36,7 +35,7 @@ const Txt_: React.FC<TProps> = ({
       color: color ?? innerLabelStyle.color,
       fontSize: textSizes[size ?? 'md'],
       flex: flex ?? undefined,
-      fontWeight: fontWeight ?? innerLabelStyle.fontWeight,
+      fontWeight: fontWeight ?? undefined,
       alignSelf: alignSelf ?? undefined,
       padding: paddingFinal.all,
       paddingLeft: paddingFinal.left,
