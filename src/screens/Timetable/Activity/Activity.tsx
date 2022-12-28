@@ -3,7 +3,12 @@ import React from 'react';
 import {computed} from 'mobx';
 import {observer} from 'mobx-react';
 import students from '../../../store/students';
-import {IActivity, IStudentItem} from '../../../types';
+import {
+  AddressOptions,
+  AddressOptionsDesc,
+  IActivity,
+  IStudentItem,
+} from '../../../types';
 import {TOnManageActivity} from '../types';
 import {Card} from '../../../components/Card';
 import {Txt} from '../../../components/Txt';
@@ -17,11 +22,20 @@ type TProps = Readonly<{
 
 const Activity_: React.FC<TProps> = observer(
   ({item, onEdit, onRemove}: TProps) => {
-    const {time, activityId, studentId, color, theme} = item;
+    const {time, activityId, studentId, color, theme, addressId} = item;
 
     const student: IStudentItem | undefined = computed(() =>
       students.getStudent(studentId),
     ).get();
+
+    const activityPlace = React.useMemo<string>(() => {
+      const place =
+        addressId === AddressOptions.StudentPlace
+          ? student?.address
+          : AddressOptionsDesc[addressId];
+
+      return place ?? '';
+    }, [addressId, student?.address]);
 
     const edit = React.useCallback(() => {
       onEdit(activityId);
@@ -48,7 +62,16 @@ const Activity_: React.FC<TProps> = observer(
           color={color}
           onEdit={edit}
           onRemove={remove}>
-          <Txt>{theme}</Txt>
+          {!!theme && (
+            <Txt color="grey" size="sm">
+              {theme}
+            </Txt>
+          )}
+          {!!activityPlace && (
+            <Txt color="grey" size="sm">
+              {`Место проведения: ${activityPlace}`}
+            </Txt>
+          )}
         </Card>
       </Flex>
     );

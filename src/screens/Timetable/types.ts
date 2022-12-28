@@ -2,7 +2,7 @@ import {IActivity, IActivityRaw, IStudentItem} from '../../types';
 
 export type TOnAddActivity = (
   data: IActivityRaw,
-  student: IStudentItem,
+  student: IStudentItem | null,
 ) => void;
 
 export type TOnManageActivity = (id: string) => void;

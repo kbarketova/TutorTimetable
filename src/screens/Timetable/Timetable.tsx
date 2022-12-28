@@ -59,7 +59,9 @@ const Timetable_: React.FC<{}> = observer(() => {
         date,
       });
 
-      students.addFullStudent(item);
+      if (item) {
+        students.addFullStudent(item);
+      }
     },
     [date],
   );
@@ -97,7 +99,7 @@ const Timetable_: React.FC<{}> = observer(() => {
         style={style}
         markedDates={markedDates}
       />
-      <Flex padding={15} color="white">
+      <Flex padding={15}>
         <FlatList
           data={sorted}
           keyExtractor={item => item.activityId}

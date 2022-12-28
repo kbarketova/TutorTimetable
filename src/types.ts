@@ -112,6 +112,13 @@ export interface IActivityRaw {
   color: string;
 }
 
+export const AddressOptionsDesc: Readonly<Record<AddressOptions, string>> = {
+  [AddressOptions.Unknown]: 'Не выбрано',
+  [AddressOptions.Remote]: 'Удаленно',
+  [AddressOptions.TeacherPlace]: 'По адресу учителя',
+  [AddressOptions.StudentPlace]: 'По адресу ученика',
+};
+
 export interface IActivity extends IActivityRaw {
   activityId: string;
   date: string;

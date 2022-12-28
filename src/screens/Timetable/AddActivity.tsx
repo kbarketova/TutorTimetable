@@ -8,6 +8,7 @@ import {TOnAddActivity, TOnEditActivity} from './types';
 import students from '../../store/students';
 import {
   AddressOptions,
+  AddressOptionsDesc,
   IActivity,
   IActivityRaw,
   IStudentItem,
@@ -57,6 +58,7 @@ const AddActivity_: React.FC<TProps> = ({
   );
   const [phone, setPhone] = React.useState<string>(student?.phone ?? '');
   const [address, setAddress] = React.useState<string>(student?.address ?? '');
+  const [color, setColor] = React.useState<string>(student?.color ?? '');
   const [time, setTime] = React.useState<string>(
     activity?.time ?? moment().format('hh:mm'),
   );
@@ -66,7 +68,7 @@ const AddActivity_: React.FC<TProps> = ({
       activity?.addressId ?? AddressOptions.Unknown,
     );
 
-  const [selectedId, setSelectedId] = React.useState<number>(0);
+  const [selectedId, setSelectedId] = React.useState<number>(student?.id ?? -1);
   const isSaveDisabled: boolean =
     !time ||
     !name ||
@@ -77,36 +79,45 @@ const AddActivity_: React.FC<TProps> = ({
 
   const actAddressOptions = React.useMemo<TSelectItemList>(() => {
     const list = [
-      {name: 'Не выбрано', id: AddressOptions.Unknown},
-      {name: 'Удаленно', id: AddressOptions.Remote},
-      {name: 'По адресу учителя', id: AddressOptions.TeacherPlace},
+      {
+        name: AddressOptionsDesc[AddressOptions.Unknown],
+        id: AddressOptions.Unknown,
+      },
+      {
+        name: AddressOptionsDesc[AddressOptions.Remote],
+        id: AddressOptions.Remote,
+      },
+      {
+        name: AddressOptionsDesc[AddressOptions.TeacherPlace],
+        id: AddressOptions.TeacherPlace,
+      },
     ];
 
-    if (student?.address) {
+    if (address) {
       return [
         ...list,
         {
-          name: 'По адресу ученика',
+          name: AddressOptionsDesc[AddressOptions.StudentPlace],
           id: AddressOptions.StudentPlace,
         },
       ];
     }
     return list;
-  }, [student?.address]);
+  }, [address]);
 
-  const selectStudent = React.useCallback<(id: number) => void>(
-    id => {
-      const item = students.getStudent(activity?.studentId ?? -1);
+  const selectStudent = React.useCallback<(id: number) => void>(id => {
+    const item = students.getStudent(id ?? -1);
+    console.log('🚀 ~ file: AddActivity.tsx:100 ~ item', item);
 
-      if (!item) {
-        return;
-      }
-      setSelectedId(id);
-      setName(item.name);
-      setPhone(item.phone ?? '');
-    },
-    [activity?.studentId],
-  );
+    if (!item) {
+      return;
+    }
+    setSelectedId(id);
+    setName(item.name);
+    setColor(item.color);
+    setPhone(item.phone ?? '');
+    setAddress(item.address ?? '');
+  }, []);
 
   const editActivity = React.useCallback(() => {
     if (!activity) {
@@ -138,37 +149,56 @@ const AddActivity_: React.FC<TProps> = ({
     if (!time) {
       return;
     }
+    if (selectedId >= 0) {
+      const data: IActivityRaw = {
+        theme,
+        time,
+        addressId: selectedAddressId,
+        studentId: selectedId,
+        color,
+      };
+      onAdd(data, null);
+      onClose();
+      return;
+    }
+
+    // case for new student
     const id = getRandomId();
     if (!students.isUniqueId(id)) {
       console.log('Id is not unique, please try again');
       return;
     }
-    const color = getRandomColor();
-    const data: IActivityRaw = {
-      theme,
-      time,
-      addressId: selectedAddressId,
-      studentId: id,
-      color,
-    };
-
-    onAdd(data, {
+    const newColor: string = getRandomColor();
+    const newStudent: IStudentItem = {
       id,
-      color,
+      color: newColor,
       name: name.trim(),
       lastName: lastName.trim(),
       phone: phone.trim(),
-      address,
-    });
+      address: address.trim(),
+    };
+
+    onAdd(
+      {
+        theme,
+        time,
+        addressId: selectedAddressId,
+        studentId: id,
+        color: newColor,
+      },
+      newStudent,
+    );
     onClose();
   }, [
     address,
+    color,
     lastName,
     name,
     onAdd,
     onClose,
     phone,
     selectedAddressId,
+    selectedId,
     theme,
     time,
   ]);
@@ -242,11 +272,11 @@ const AddActivity_: React.FC<TProps> = ({
         selectedId={selectedAddressId}
         onSelect={setSelectedAddressId}
       />
-      {isOldActivity && selectedAddressId === AddressOptions.StudentPlace && (
+      {selectedAddressId === AddressOptions.StudentPlace && (
         <PressableField
           isReadonly
           label="Адрес ученика"
-          value={student?.address ?? ''}
+          value={address ?? ''}
         />
       )}
       <TimePicker time={time} onChangeTime={setTime} />
